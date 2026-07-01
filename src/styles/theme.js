@@ -1,0 +1,27 @@
+// src/styles/theme.js
+export const T = {
+  bg0: "#0f172a",
+  bg1: "#1e293b",
+  bg2: "#273548",
+  bg3: "#334155",
+  border: "#2a3f5a",
+  textPrimary: "#e2e8f0",
+  textSecondary: "#94a3b8",
+  textMuted: "#64748b",
+  blue: "#3b82f6",
+  blueGlow: "#3b82f618",
+  green: "#22c55e",
+  orange: "#f97316",
+  red: "#ef4444",
+  types: {
+    BIG: "#ff6b35",
+    CLOTHES: "#a78bfa",
+    FRAGILE: "#38bdf8",
+    BOOKS: "#fb923c",
+    RECORDS: "#f472b6",
+    DVDS: "#34d399",
+    MISC: "#94a3b8",
+  },
+  font: "'Inter','Segoe UI',system-ui,sans-serif",
+  fontMono: "'Courier New',monospace",
+};
