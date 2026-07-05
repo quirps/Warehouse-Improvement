@@ -16,26 +16,37 @@ import {
   ITEM_TYPES,
 } from "../../data/mockData.js";
 
-// ─── Default size presets (user can add more) ─────────────────────────────────
+// ─── Atomic unit system ───────────────────────────────────────────────────────
+// ATOM is the smallest meaningful floor unit. All box W/D dimensions must be
+// multiples of ATOM so any two boxes can sit flush edge-to-edge.
+// H (height) can be any positive multiple of ATOM too, but is less critical.
+const ATOM = 0.125; // 1/8 au smallest unit
+
+// Default box is 1au (8 atoms) in each direction
+const DEFAULT_W = 1.0;
+const DEFAULT_H = 1.0;
+const DEFAULT_D = 1.0;
+
 const DEFAULT_PRESETS = [
-  { name: "Cube", w: 1, h: 1, d: 1 },
-  { name: "Half-H", w: 1, h: 0.5, d: 1 },
-  { name: "Quarter-H", w: 1, h: 0.25, d: 1 },
+  { name: "Standard", w: DEFAULT_W, h: DEFAULT_H, d: DEFAULT_D },
+  { name: "Half-Height", w: DEFAULT_W, h: DEFAULT_H / 2, d: DEFAULT_D },
+  { name: "Slim", w: DEFAULT_W / 2, h: DEFAULT_H, d: DEFAULT_D },
 ];
 
 const MAX_HISTORY = 60;
 let _id = 1;
 const newId = () => `box_${_id++}`;
+
+// Round to nearest multiple of ATOM
+const snapAtom = (v) => Math.round(v / ATOM) * ATOM;
+// Round to nearest multiple of unit (used for per-box-size grid snapping)
+const snapTo = (v, unit) => Math.round(v / unit) * unit;
 const round2 = (v) => Math.round(v * 100) / 100;
 
-// Smallest footprint unit any box can use on the floor grid. All footprint
-// dimensions (W/D) are constrained to multiples of this so boxes of
-// different fractional sizes still snap flush against each other.
-const GRID_UNIT = 0.5;
-const snapToUnit = (v, unit = GRID_UNIT) => Math.round(v / unit) * unit;
-// Back-compat alias — snap() now snaps to the grid unit, not whole integers
-const snap = (v) => snapToUnit(v);
+// Clamp a dimension to min 1 atom, max 1.0 (1au), snapped to atom grid
+const clampDim = (v) => Math.max(ATOM, Math.min(1.0, snapAtom(v)));
 
+// ─── Stacking helpers ─────────────────────────────────────────────────────────
 function getColumnTop(boxes, x, z) {
   let top = 0;
   for (const b of boxes) {
@@ -47,6 +58,51 @@ function getColumnTop(boxes, x, z) {
   return top;
 }
 const stackY = (boxes, x, z, size) => getColumnTop(boxes, x, z) + size.h / 2;
+
+// Near-snap: pull position to flush with a neighbour edge if within 1.0 (a unit)
+function nearSnap(x, z, size, boxes) {
+  let nx = x;
+  let nz = z;
+  const SNAP_THRESHOLD = Math.max(0.3, Math.max(size.w, size.d) * 0.5);
+
+  let bestX = x;
+  let bestZ = z;
+  let minCombinedDist = Infinity;
+
+  for (const b of boxes) {
+    const bx = b.position.x, bz = b.position.z;
+    const bw = b.size.w, bd = b.size.d;
+
+    const bLeftX = bx - bw / 2;
+    const bRightX = bx + bw / 2;
+    const bNearZ = bz - bd / 2;
+    const bFarZ = bz + bd / 2;
+
+    const halfW = size.w / 2;
+    const halfD = size.d / 2;
+
+    // Potential target X/Z positions
+    const targets = [
+      { nx: bRightX + halfW, nz: bz }, // Flush right
+      { nx: bLeftX - halfW, nz: bz },  // Flush left
+      { nx: bx, nz: bFarZ + halfD },   // Flush far
+      { nx: bx, nz: bNearZ - halfD },  // Flush near
+    ];
+
+    for (const { nx: targetX, nz: targetZ } of targets) {
+      const dist = Math.sqrt(Math.pow(x - targetX, 2) + Math.pow(z - targetZ, 2));
+      
+      // Check if both axes are within threshold to snap to this target
+      if (dist < SNAP_THRESHOLD && dist < minCombinedDist) {
+        minCombinedDist = dist;
+        bestX = targetX;
+        bestZ = targetZ;
+      }
+    }
+  }
+
+  return { x: bestX, z: bestZ };
+}
 
 // ─── Colour tokens ────────────────────────────────────────────────────────────
 const C = {
@@ -154,24 +210,278 @@ const capDot = (c) => (
   />
 );
 
+// Axis colour coding (W=blue, H=green, D=orange) — consistent everywhere
+const AXIS_COLORS = { w: "#3b82f6", h: "#22c55e", d: "#f97316" };
+
+// ─── Live 3D Box Type Preview (Three.js in a small canvas) ───────────────────
+function BoxTypePreview({ newSize }) {
+  const mountRef = useRef(null);
+  const sceneRef = useRef(null);
+  const rendRef = useRef(null);
+  const camRef = useRef(null);
+  const rafRef = useRef(null);
+  const theta = useRef(0.6);
+  const phi = useRef(0.85);
+  const ptrState = useRef({ down: false, lx: 0, ly: 0 });
+
+  // Rebuild scene whenever sizes change
+  useEffect(() => {
+    const el = mountRef.current;
+    if (!el) return;
+    const W = el.clientWidth || 240,
+      H = el.clientHeight || 160;
+
+    if (!rendRef.current) {
+      const r = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      r.setSize(W, H);
+      r.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      r.setClearColor(0x000000, 0);
+      el.appendChild(r.domElement);
+      rendRef.current = r;
+      const scene = new THREE.Scene();
+      sceneRef.current = scene;
+      scene.add(new THREE.AmbientLight(0xffffff, 1.2));
+      const d = new THREE.DirectionalLight(0x88aaff, 2.0);
+      d.position.set(5, 8, 5);
+      scene.add(d);
+      const cam = new THREE.PerspectiveCamera(40, W / H, 0.1, 100);
+      camRef.current = cam;
+    }
+
+    const scene = sceneRef.current;
+    // Clear old box meshes (keep lights)
+    const toRemove = [];
+    scene.traverse((o) => {
+      if (o.userData.preview) toRemove.push(o);
+    });
+    toRemove.forEach((o) => {
+      scene.remove(o);
+      if (o.geometry) o.geometry.dispose();
+      if (o.material) o.material.dispose();
+    });
+
+    const { w, h, d } = newSize;
+    const dw = DEFAULT_W,
+      dh = DEFAULT_H,
+      dd = DEFAULT_D;
+
+    // Default box ghost (dim wireframe)
+    const defGeo = new THREE.BoxGeometry(dw, dh, dd);
+    const defEdge = new THREE.EdgesGeometry(defGeo);
+    const ghost = new THREE.LineSegments(
+      defEdge,
+      new THREE.LineBasicMaterial({
+        color: 0x334466,
+        transparent: true,
+        opacity: 0.35,
+      }),
+    );
+    ghost.userData.preview = true;
+    ghost.position.y = dh / 2;
+    scene.add(ghost);
+    defGeo.dispose();
+
+    // New box — solid with coloured faces per axis
+    const nGeo = new THREE.BoxGeometry(w, h, d);
+    const mat = new THREE.MeshStandardMaterial({
+      color: 0x0d1f35,
+      metalness: 0.3,
+      roughness: 0.6,
+      emissive: 0x0a1a30,
+      emissiveIntensity: 0.4,
+    });
+    const mesh = new THREE.Mesh(nGeo, mat);
+    mesh.userData.preview = true;
+    mesh.position.y = h / 2;
+    scene.add(mesh);
+
+    // Coloured edge axes: 4 lines along W (blue), 4 along H (green), 4 along D (orange)
+    const hw = w / 2,
+      hh = h / 2,
+      hd = d / 2;
+    const edgeLines = [
+      // W axis — blue — 4 parallel edges
+      [
+        [-hw, -hh, -hd],
+        [hw, -hh, -hd],
+      ],
+      [
+        [-hw, hh, -hd],
+        [hw, hh, -hd],
+      ],
+      [
+        [-hw, -hh, hd],
+        [hw, -hh, hd],
+      ],
+      [
+        [-hw, hh, hd],
+        [hw, hh, hd],
+      ],
+      // H axis — green — 4 parallel edges
+      [
+        [-hw, -hh, -hd],
+        [-hw, hh, -hd],
+      ],
+      [
+        [hw, -hh, -hd],
+        [hw, hh, -hd],
+      ],
+      [
+        [-hw, -hh, hd],
+        [-hw, hh, hd],
+      ],
+      [
+        [hw, -hh, hd],
+        [hw, hh, hd],
+      ],
+      // D axis — orange — 4 parallel edges
+      [
+        [-hw, -hh, -hd],
+        [-hw, -hh, hd],
+      ],
+      [
+        [hw, -hh, -hd],
+        [hw, -hh, hd],
+      ],
+      [
+        [-hw, hh, -hd],
+        [-hw, hh, hd],
+      ],
+      [
+        [hw, hh, -hd],
+        [hw, hh, hd],
+      ],
+    ];
+    const axisColors = [
+      0x3b82f6, 0x3b82f6, 0x3b82f6, 0x3b82f6, 0x22c55e, 0x22c55e, 0x22c55e,
+      0x22c55e, 0xf97316, 0xf97316, 0xf97316, 0xf97316,
+    ];
+    edgeLines.forEach(([a, b], i) => {
+      const geo = new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector3(...a),
+        new THREE.Vector3(...b),
+      ]);
+      const line = new THREE.Line(
+        geo,
+        new THREE.LineBasicMaterial({ color: axisColors[i], linewidth: 2 }),
+      );
+      line.userData.preview = true;
+      line.position.y = h / 2;
+      scene.add(line);
+    });
+
+    // Fit camera to the larger of the two boxes
+    const maxDim = Math.max(w, h, d, dw, dh, dd);
+    camRef.current.aspect = W / H;
+    camRef.current.updateProjectionMatrix();
+
+    const applyOrbitCam = () => {
+      const r2 = maxDim * 2.2;
+      const p = phi.current,
+        t = theta.current;
+      camRef.current.position.set(
+        r2 * Math.sin(p) * Math.sin(t),
+        r2 * Math.cos(p),
+        r2 * Math.sin(p) * Math.cos(t),
+      );
+      camRef.current.lookAt(0, Math.max(h, dh) / 2, 0);
+    };
+    applyOrbitCam();
+
+    let live = true;
+    const tick = () => {
+      if (!live) return;
+      rafRef.current = requestAnimationFrame(tick);
+      // Slow auto-rotate when not being manipulated
+      if (!ptrState.current.down) {
+        theta.current += 0.005;
+        applyOrbitCam();
+      }
+      rendRef.current.render(scene, camRef.current);
+    };
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    tick();
+
+    return () => {
+      live = false;
+      cancelAnimationFrame(rafRef.current);
+    };
+  }, [newSize.w, newSize.h, newSize.d]);
+
+  // Cleanup renderer on unmount
+  useEffect(() => {
+    return () => {
+      cancelAnimationFrame(rafRef.current);
+      if (rendRef.current) {
+        rendRef.current.dispose();
+        const el = mountRef.current;
+        if (el && rendRef.current.domElement.parentNode === el)
+          el.removeChild(rendRef.current.domElement);
+        rendRef.current = null;
+        sceneRef.current = null;
+      }
+    };
+  }, []);
+
+  const onPtrDown = (e) => {
+    ptrState.current = { down: true, lx: e.clientX, ly: e.clientY };
+  };
+  const onPtrMove = (e) => {
+    const ps = ptrState.current;
+    if (!ps.down) return;
+    theta.current -= (e.clientX - ps.lx) * 0.01;
+    phi.current = Math.max(
+      0.15,
+      Math.min(Math.PI / 2.1, phi.current - (e.clientY - ps.ly) * 0.01),
+    );
+    ps.lx = e.clientX;
+    ps.ly = e.clientY;
+  };
+  const onPtrUp = () => {
+    ptrState.current.down = false;
+  };
+
+  return (
+    <div
+      ref={mountRef}
+      style={{
+        width: "100%",
+        height: 160,
+        borderRadius: 8,
+        overflow: "hidden",
+        background: "#060f1c",
+        border: `1px solid #1a3050`,
+        cursor: "grab",
+      }}
+      onPointerDown={onPtrDown}
+      onPointerMove={onPtrMove}
+      onPointerUp={onPtrUp}
+      onPointerLeave={onPtrUp}
+    />
+  );
+}
+
 // ─── New Box Type Dialog ──────────────────────────────────────────────────────
-// Lets user derive a new preset from the selected box by halving or doubling
-// any single dimension, then naming it.
 function NewTypeDialog({ baseSize, onAdd, onCancel }) {
   const [name, setName] = useState("");
-  const [size, setSize] = useState({ ...baseSize });
+  const [size, setSize] = useState({
+    w: clampDim(baseSize.w),
+    h: clampDim(baseSize.h),
+    d: clampDim(baseSize.d),
+  });
   const [nameErr, setNameErr] = useState(false);
 
-  const adjust = (axis, op) => {
+  const atoms = { w: size.w / ATOM, h: size.h / ATOM, d: size.d / ATOM };
+  const defAtoms = {
+    w: DEFAULT_W / ATOM,
+    h: DEFAULT_H / ATOM,
+    d: DEFAULT_D / ATOM,
+  };
+
+  const adjust = (axis, delta) => {
     setSize((prev) => {
-      const next = round2(op === "×2" ? prev[axis] * 2 : prev[axis] / 2);
-      // W and D (footprint) must stay on the GRID_UNIT lattice so boxes of
-      // different sizes still line up flush on the floor. H is unrestricted
-      // since height only affects stacking, not floor snapping.
-      if (axis === "w" || axis === "d") {
-        return { ...prev, [axis]: Math.max(GRID_UNIT, next) };
-      }
-      return { ...prev, [axis]: Math.max(0.1, next) };
+      const next = clampDim(round2(prev[axis] + delta * ATOM));
+      return { ...prev, [axis]: next };
     });
   };
 
@@ -180,59 +490,149 @@ function NewTypeDialog({ baseSize, onAdd, onCancel }) {
       setNameErr(true);
       return;
     }
-    onAdd({ name: name.trim(), ...size });
+    onAdd({ name: name.trim(), w: size.w, h: size.h, d: size.d });
   };
 
-  const DimRow = ({ axis, label }) => (
-    <div
-      style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}
-    >
-      <span style={{ color: C.textDim, fontSize: 11, width: 20 }}>{label}</span>
-      <button
-        onClick={() => adjust(axis, "÷2")}
-        style={{
-          ...abtn,
-          margin: 0,
-          padding: "3px 10px",
-          width: "auto",
-          fontSize: 11,
-        }}
-      >
-        ÷2
-      </button>
-      <span
-        style={{
-          color: C.text,
-          fontSize: 14,
-          fontWeight: "bold",
-          minWidth: 36,
-          textAlign: "center",
-          fontFamily: "'Courier New',monospace",
-        }}
-      >
-        {size[axis]}
-      </span>
-      <button
-        onClick={() => adjust(axis, "×2")}
-        style={{
-          ...abtn,
-          margin: 0,
-          padding: "3px 10px",
-          width: "auto",
-          fontSize: 11,
-        }}
-      >
-        ×2
-      </button>
-    </div>
-  );
+  const DimRow = ({ axis }) => {
+    const col = AXIS_COLORS[axis];
+    const label = axis.toUpperCase();
+    const val = size[axis];
+    const aCount = val / ATOM;
+    const dCount =
+      (axis === "w" ? DEFAULT_W : axis === "h" ? DEFAULT_H : DEFAULT_D) / ATOM;
+    const pct = Math.min(
+      200,
+      Math.round(
+        (val /
+          (axis === "w" ? DEFAULT_W : axis === "h" ? DEFAULT_H : DEFAULT_D)) *
+          100,
+      ),
+    );
+    return (
+      <div style={{ marginBottom: 10 }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            marginBottom: 4,
+          }}
+        >
+          <span
+            style={{ color: col, fontSize: 12, fontWeight: "bold", width: 16 }}
+          >
+            {label}
+          </span>
+          <button
+            onClick={() => adjust(axis, -1)}
+            style={{
+              background: "#091828",
+              border: `1px solid ${col}44`,
+              color: col,
+              borderRadius: 4,
+              width: 26,
+              height: 26,
+              cursor: "pointer",
+              fontSize: 14,
+            }}
+          >
+            −
+          </button>
+          <div
+            style={{ flex: 1, display: "flex", alignItems: "center", gap: 6 }}
+          >
+            {/* Atom dots */}
+            <div style={{ display: "flex", gap: 2 }}>
+              {Array.from({ length: Math.max(aCount, dCount) }).map((_, i) => (
+                <div
+                  key={i}
+                  style={{
+                    width: 8,
+                    height: 8,
+                    borderRadius: 2,
+                    background: i < aCount ? col : col + "22",
+                    border: `1px solid ${col}55`,
+                  }}
+                />
+              ))}
+            </div>
+            <span
+              style={{
+                color: col,
+                fontSize: 12,
+                fontWeight: "bold",
+                minWidth: 20,
+              }}
+            >
+              {aCount}
+            </span>
+            <span style={{ color: C.textMute, fontSize: 10 }}>
+              atoms ({val}u)
+            </span>
+          </div>
+          <button
+            onClick={() => adjust(axis, +1)}
+            style={{
+              background: "#091828",
+              border: `1px solid ${col}44`,
+              color: col,
+              borderRadius: 4,
+              width: 26,
+              height: 26,
+              cursor: "pointer",
+              fontSize: 14,
+            }}
+          >
+            +
+          </button>
+        </div>
+        {/* Size bar vs default */}
+        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+          <div style={{ width: 6 }} />
+          <div
+            style={{
+              flex: 1,
+              height: 6,
+              background: "#0a1825",
+              borderRadius: 3,
+              overflow: "hidden",
+            }}
+          >
+            <div
+              style={{
+                height: "100%",
+                width: `${Math.min(100, pct)}%`,
+                background: col,
+                borderRadius: 3,
+                transition: "width 0.15s",
+              }}
+            />
+          </div>
+          <span
+            style={{
+              fontSize: 9,
+              color: pct === 100 ? C.textMute : pct > 100 ? col : C.textMute,
+              minWidth: 32,
+              textAlign: "right",
+            }}
+          >
+            {pct === 100
+              ? "=default"
+              : pct > 100
+                ? `+${pct - 100}%`
+                : `${pct}%`}
+          </span>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div
       style={{
         position: "absolute",
         inset: 0,
-        background: "#00000075",
+        background: "#000000aa",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -246,13 +646,16 @@ function NewTypeDialog({ baseSize, onAdd, onCancel }) {
         style={{
           background: "#07111f",
           border: "1px solid #1a4a80",
-          borderRadius: 10,
+          borderRadius: 12,
           padding: "22px 24px",
-          minWidth: 280,
-          boxShadow: "0 0 40px #0a2a6050",
+          width: 380,
+          maxWidth: "95vw",
+          boxShadow: "0 0 60px #0a2a6070",
           display: "flex",
           flexDirection: "column",
           gap: 14,
+          maxHeight: "90vh",
+          overflowY: "auto",
         }}
       >
         <div
@@ -266,113 +669,70 @@ function NewTypeDialog({ baseSize, onAdd, onCancel }) {
           NEW BOX TYPE
         </div>
 
-        {/* Base reference */}
-        <div style={{ color: C.textDim, fontSize: 11 }}>
-          Based on:{" "}
-          <span
-            style={{ color: C.text, fontFamily: "'Courier New',monospace" }}
-          >
-            {baseSize.w}×{baseSize.h}×{baseSize.d}
+        {/* Live 3D preview */}
+        <BoxTypePreview newSize={size} />
+
+        {/* Axis legend */}
+        <div style={{ display: "flex", gap: 14 }}>
+          {Object.entries(AXIS_COLORS).map(([ax, col]) => (
+            <div
+              key={ax}
+              style={{ display: "flex", alignItems: "center", gap: 5 }}
+            >
+              <div
+                style={{
+                  width: 20,
+                  height: 3,
+                  background: col,
+                  borderRadius: 2,
+                }}
+              />
+              <span style={{ color: col, fontSize: 10, fontWeight: "bold" }}>
+                {ax.toUpperCase()}
+              </span>
+            </div>
+          ))}
+          <span style={{ color: C.textMute, fontSize: 9, marginLeft: "auto" }}>
+            Ghost = default ({DEFAULT_W}×{DEFAULT_H}×{DEFAULT_D})
           </span>
         </div>
 
-        {/* Dimension adjusters */}
-        <div>
-          <div style={{ ...slabel, marginBottom: 10 }}>Adjust Dimensions</div>
-          <DimRow axis="w" label="W" />
-          <DimRow axis="h" label="H" />
-          <DimRow axis="d" label="D" />
-          <div style={{ color: C.textMute, fontSize: 10, marginTop: 4 }}>
-            Result:{" "}
-            <span style={{ color: C.text }}>
-              {size.w}×{size.h}×{size.d}
-            </span>
-          </div>
-          <div
-            style={{
-              color: "#2a5070",
-              fontSize: 9,
-              marginTop: 6,
-              lineHeight: 1.5,
-            }}
-          >
-            W/D snap to {GRID_UNIT}-unit steps so boxes stay flush on the floor
-            grid. Height is unrestricted.
-          </div>
-        </div>
-
-        {/* Preview */}
+        {/* Dimension controls */}
         <div
           style={{
-            background: "#0a1828",
-            borderRadius: 6,
-            padding: "10px 12px",
+            background: "#080f1a",
+            borderRadius: 8,
+            padding: "12px 14px",
             border: `1px solid #1a3050`,
           }}
         >
-          <div style={{ color: C.textDim, fontSize: 10, marginBottom: 6 }}>
-            3D preview (relative)
+          <div style={{ ...slabel, marginBottom: 10 }}>
+            Dimensions (1 step = {ATOM} unit atom)
           </div>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "flex-end",
-              gap: 3,
-              height: 40,
-            }}
-          >
-            {[
-              {
-                label: "W",
-                val: size.w,
-                max: Math.max(size.w, size.h, size.d),
-                col: "#3b82f6",
-              },
-              {
-                label: "H",
-                val: size.h,
-                max: Math.max(size.w, size.h, size.d),
-                col: "#22c55e",
-              },
-              {
-                label: "D",
-                val: size.d,
-                max: Math.max(size.w, size.h, size.d),
-                col: "#f97316",
-              },
-            ].map(({ label, val, max, col }) => (
-              <div
-                key={label}
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  gap: 3,
-                }}
-              >
-                <div
-                  style={{
-                    width: 24,
-                    height: Math.max(4, (val / max) * 34),
-                    background: col + "44",
-                    border: `1px solid ${col}88`,
-                    borderRadius: 2,
-                  }}
-                />
-                <span style={{ color: C.textMute, fontSize: 9 }}>{label}</span>
-              </div>
-            ))}
+          <DimRow axis="w" />
+          <DimRow axis="h" />
+          <DimRow axis="d" />
+          <div style={{ color: C.textMute, fontSize: 10, marginTop: 2 }}>
+            Final:{" "}
+            <span
+              style={{ color: C.text, fontFamily: "'Courier New',monospace" }}
+            >
+              {size.w}×{size.h}×{size.d}
+            </span>
+            <span style={{ color: "#2a5070", marginLeft: 8 }}>
+              ({atoms.w}×{atoms.h}×{atoms.d} atoms)
+            </span>
           </div>
         </div>
 
-        {/* Name input */}
+        {/* Name */}
         <div>
-          <label style={{ ...slabel, marginBottom: 6 }}>Type Name</label>
+          <label style={{ ...slabel, marginBottom: 6 }}>Box Type Name</label>
           <input
             autoFocus
             value={name}
-            maxLength={20}
-            placeholder="e.g. Tall Shelf, Wide Pallet…"
+            maxLength={24}
+            placeholder="e.g. Tall Shelf, Wide Pallet, Small Bin…"
             onChange={(e) => {
               setName(e.target.value);
               setNameErr(false);
@@ -386,12 +746,12 @@ function NewTypeDialog({ baseSize, onAdd, onCancel }) {
               ...sinput,
               borderColor: nameErr ? C.danger : "#1a3a55",
               fontSize: 13,
-              padding: "7px 10px",
+              padding: "8px 12px",
             }}
           />
           {nameErr && (
             <div style={{ color: C.danger, fontSize: 10, marginTop: 4 }}>
-              Name required
+              Name is required
             </div>
           )}
         </div>
@@ -400,8 +760,8 @@ function NewTypeDialog({ baseSize, onAdd, onCancel }) {
           <button
             style={{
               flex: 1,
-              padding: "9px",
-              borderRadius: 5,
+              padding: "10px",
+              borderRadius: 6,
               background: "#0e2a45",
               border: "1px solid #2060a0",
               color: "#5ab0ff",
@@ -410,12 +770,12 @@ function NewTypeDialog({ baseSize, onAdd, onCancel }) {
             }}
             onClick={handleAdd}
           >
-            + Add Type
+            + Add Box Type
           </button>
           <button
             style={{
-              padding: "9px 14px",
-              borderRadius: 5,
+              padding: "10px 16px",
+              borderRadius: 6,
               background: "#0a1825",
               border: "1px solid #1a3050",
               color: "#4a7090",
@@ -580,13 +940,27 @@ function EditDialog({ box, labelDraft, setLabelDraft, onConfirm, onCancel }) {
   );
 }
 
-// ─── Box Info Panel (replaces "select/move" sidebar) ─────────────────────────
+// ─── Box Info Panel ───────────────────────────────────────────────────────────
 function BoxInfoPanel({ box, onEdit, onDelete }) {
   if (!box) return null;
   const cap = CAPACITY_COLORS[box.capacity] || CAPACITY_COLORS.Unset;
   return (
     <div style={{ ...sec, background: "#080f1e" }}>
       <span style={slabel}>Selected Box</span>
+      {box.presetName && (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginBottom: 5,
+          }}
+        >
+          <span style={{ color: C.textDim, fontSize: 11 }}>Type</span>
+          <span style={{ color: "#5ab0ff", fontSize: 11, fontWeight: "bold" }}>
+            {box.presetName}
+          </span>
+        </div>
+      )}
       <div
         style={{
           display: "flex",
@@ -616,7 +990,9 @@ function BoxInfoPanel({ box, onEdit, onDelete }) {
       >
         <span style={{ color: C.textDim, fontSize: 11 }}>Size</span>
         <span style={{ color: C.text, fontSize: 11 }}>
-          {box.size.w}×{box.size.h}×{box.size.d}
+          <span style={{ color: AXIS_COLORS.w }}>{box.size.w}</span>×
+          <span style={{ color: AXIS_COLORS.h }}>{box.size.h}</span>×
+          <span style={{ color: AXIS_COLORS.d }}>{box.size.d}</span>
         </span>
       </div>
       <div
@@ -679,7 +1055,7 @@ export default function WarehouseBuilder({
   const floorRef = useRef(null);
   const rcRef = useRef(new THREE.Raycaster());
   const rafRef = useRef(null);
-  const camSph = useRef({ r: 22, phi: 0.82, theta: 0.68 });
+  const camSph = useRef({ r: 26, phi: 0.82, theta: 0.68 });
   const camTarget = useRef(new THREE.Vector3(0, 0, 0));
   const ptrState = useRef({
     down: false,
@@ -694,7 +1070,7 @@ export default function WarehouseBuilder({
   const lastClick = useRef(0);
 
   const [boxes, setBoxes] = useState(initialBoxes || []);
-  const [region, setRegion] = useState("MH"); // which warehouse this layout belongs to
+  const [region, setRegion] = useState("MH");
   const [selectedId, setSelectedId] = useState(null);
   const [tool, setTool] = useState("select");
   const [presets, setPresets] = useState(DEFAULT_PRESETS);
@@ -707,10 +1083,10 @@ export default function WarehouseBuilder({
   const [delHoverId, setDelHoverId] = useState(null);
   const [demoMode, setDemoMode] = useState(false);
   const [showNewType, setShowNewType] = useState(false);
+
   const historyRef = useRef([]);
   const futureRef = useRef([]);
 
-  // Stable refs for event handlers
   const bRef = useRef(boxes);
   const selRef = useRef(selectedId);
   const toolRef = useRef(tool);
@@ -822,15 +1198,16 @@ export default function WarehouseBuilder({
     camRef.current = cam;
     applyCamera();
     addSceneLights(scene);
-    scene.add(buildGrid());
+    // Grid at ATOM spacing up to a reasonable size
+    scene.add(buildGrid(40, ATOM));
     const floor = new THREE.Mesh(
-      new THREE.PlaneGeometry(GRID_SIZE, GRID_SIZE),
+      new THREE.PlaneGeometry(200, 200),
       new THREE.MeshBasicMaterial({ visible: false, side: THREE.DoubleSide }),
     );
     floor.rotation.x = -Math.PI / 2;
     scene.add(floor);
     floorRef.current = floor;
-    const ghost = makeGhostMesh(1, 1, 1);
+    const ghost = makeGhostMesh(DEFAULT_W, DEFAULT_H, DEFAULT_D);
     ghost.visible = false;
     scene.add(ghost);
     ghostRef.current = ghost;
@@ -910,7 +1287,7 @@ export default function WarehouseBuilder({
     } else ghost.visible = false;
   }, [hoverPos, tool, activeSzIdx, boxes]);
 
-  // ── Raycasting helpers ──────────────────────────────────────────────────────
+  // ── Raycasting ──────────────────────────────────────────────────────────────
   const getNDC = useCallback((e) => {
     const r = mountRef.current.getBoundingClientRect();
     return new THREE.Vector2(
@@ -939,15 +1316,26 @@ export default function WarehouseBuilder({
     return null;
   }, []);
 
-  const getFloorPos = useCallback((hit) => {
+  // Compute floor position using the fine ATOM snap grid (0.125),
+  // then apply near-snap to pull to adjacent box edges
+  const getFloorPos = useCallback((hit, preset) => {
     if (!hit) return null;
-    if (hit.type === "floor")
-      return { x: snap(hit.point.x), z: snap(hit.point.z) };
-    if (hit.type === "box") {
+    let raw;
+    if (hit.type === "floor") raw = { x: hit.point.x, z: hit.point.z };
+    else if (hit.type === "box") {
       const b = bRef.current.find((b) => b.id === hit.boxId);
-      return b ? { x: b.position.x, z: b.position.z } : null;
-    }
-    return null;
+      raw = b
+        ? { x: b.position.x, z: b.position.z }
+        : { x: hit.point.x, z: hit.point.z };
+    } else return null;
+
+    // Snap to the fine ATOM grid (0.125) for smooth movement
+    let x = snapAtom(raw.x);
+    let z = snapAtom(raw.z);
+
+    // Near-snap: pull edges flush to neighbours
+    const snapped = nearSnap(x, z, preset, bRef.current);
+    return snapped;
   }, []);
 
   // ── Pointer handlers ────────────────────────────────────────────────────────
@@ -975,8 +1363,9 @@ export default function WarehouseBuilder({
       )
         ps.moved = true;
       if (toolRef.current === "place") {
+        const preset = presRef.current[szRef.current] || presRef.current[0];
         const hit = raycast(getNDC(e));
-        setHoverPos(getFloorPos(hit));
+        setHoverPos(getFloorPos(hit, preset));
       } else setHoverPos(null);
       if (toolRef.current === "delete") {
         const hit = raycast(getNDC(e));
@@ -1020,20 +1409,21 @@ export default function WarehouseBuilder({
       const t = toolRef.current;
       if (t === "place") {
         const p = presRef.current[szRef.current] || presRef.current[0];
-        const pos = getFloorPos(hit);
+        const pos = getFloorPos(hit, p);
         if (!pos) return;
         const prev = bRef.current;
         const y = stackY(prev, pos.x, pos.z, p);
         const nb = {
           id: newId(),
           label: "",
+          presetName: p.name, // ← save the type name on the placed box
           position: { x: pos.x, y, z: pos.z },
           size: { w: p.w, h: p.h, d: p.d },
           capacity: "Unset",
         };
         commitBoxes([...prev, nb], prev);
         setSelectedId(nb.id);
-        status(`Placed ${p.name}`);
+        status(`Placed "${p.name}"`);
       } else if (t === "select") {
         if (hit?.type === "box") {
           setSelectedId(hit.boxId);
@@ -1071,7 +1461,7 @@ export default function WarehouseBuilder({
       e.preventDefault();
       camSph.current.r = Math.max(
         3,
-        Math.min(65, camSph.current.r + e.deltaY * 0.03),
+        Math.min(80, camSph.current.r + e.deltaY * 0.04),
       );
       applyCamera();
     },
@@ -1107,7 +1497,7 @@ export default function WarehouseBuilder({
         camSph.current.r = Math.max(
           3,
           Math.min(
-            65,
+            80,
             camSph.current.r + (touchSt.current.lastDist - dist) * 0.05,
           ),
         );
@@ -1166,12 +1556,10 @@ export default function WarehouseBuilder({
         const cb = clipRef.current;
         if (!cb) return;
         const prev = bRef.current;
-        const nb = {
-          ...cb,
-          id: newId(),
-          position: { ...cb.position, x: cb.position.x + 1 },
-        };
-        nb.position.y = stackY(prev, nb.position.x, nb.position.z, nb.size);
+        const nx = snapTo(cb.position.x + cb.size.w, Math.max(ATOM, cb.size.w));
+        const nz = cb.position.z;
+        const ny = stackY(prev, nx, nz, cb.size);
+        const nb = { ...cb, id: newId(), position: { x: nx, y: ny, z: nz } };
         commitBoxes([...prev, nb], prev);
         setSelectedId(nb.id);
         status("Pasted");
@@ -1192,6 +1580,7 @@ export default function WarehouseBuilder({
         }
         return;
       }
+      // Arrow keys nudge by the box's own footprint size
       const NUDGE = {
         ArrowLeft: [-1, 0],
         ArrowRight: [1, 0],
@@ -1201,27 +1590,23 @@ export default function WarehouseBuilder({
       if (NUDGE[e.key] && sel) {
         e.preventDefault();
         const [dxu, dzu] = NUDGE[e.key];
-        const dx = dxu * GRID_UNIT,
-          dz = dzu * GRID_UNIT;
         const prev = bRef.current;
+        const selBox = prev.find((b) => b.id === sel);
+        if (!selBox) return;
+        const stepX = Math.max(ATOM, selBox.size.w) * dxu;
+        const stepZ = Math.max(ATOM, selBox.size.d) * dzu;
         commitBoxes(
           prev.map((b) => {
             if (b.id !== sel) return b;
-            const nx = snap(b.position.x + dx),
-              nz = snap(b.position.z + dz);
-            return {
-              ...b,
-              position: {
-                x: nx,
-                y: stackY(
-                  prev.filter((x) => x.id !== sel),
-                  nx,
-                  nz,
-                  b.size,
-                ),
-                z: nz,
-              },
-            };
+            const nx = snapTo(b.position.x + stepX, Math.max(ATOM, b.size.w));
+            const nz = snapTo(b.position.z + stepZ, Math.max(ATOM, b.size.d));
+            const ny = stackY(
+              prev.filter((x) => x.id !== sel),
+              nx,
+              nz,
+              b.size,
+            );
+            return { ...b, position: { x: nx, y: ny, z: nz } };
           }),
           prev,
         );
@@ -1258,9 +1643,10 @@ export default function WarehouseBuilder({
       r.onload = (e2) => {
         try {
           const p = JSON.parse(e2.target.result);
-          const loadedBoxes = p.boxes || p; // support both {boxes,presets} and bare array
-          if (p.region) setRegion(p.region);
+          const loadedBoxes = p.boxes || (Array.isArray(p) ? p : null);
           if (Array.isArray(loadedBoxes)) {
+            if (p.region) setRegion(p.region);
+            if (p.presets && Array.isArray(p.presets)) setPresets(p.presets);
             const mx = loadedBoxes.reduce(
               (m, b) =>
                 Math.max(m, parseInt((b.id || "").replace("box_", "")) || 0),
@@ -1268,7 +1654,6 @@ export default function WarehouseBuilder({
             );
             _id = mx + 1;
             commitBoxes(loadedBoxes, bRef.current);
-            if (p.presets && Array.isArray(p.presets)) setPresets(p.presets);
             setSelectedId(null);
             status(`Loaded ${loadedBoxes.length} boxes`);
           }
@@ -1299,10 +1684,11 @@ export default function WarehouseBuilder({
   );
 
   const handleAddPreset = (preset) => {
-    setPresets((prev) => [...prev, preset]);
-    setActiveSzIdx(presets.length); // select the new one
+    const next = [...presRef.current, preset];
+    setPresets(next);
+    setActiveSzIdx(next.length - 1);
     setShowNewType(false);
-    status(`New type "${preset.name}" added`);
+    status(`Box type "${preset.name}" added`);
   };
 
   const selectedBox = boxes.find((b) => b.id === selectedId);
@@ -1325,8 +1711,8 @@ export default function WarehouseBuilder({
       {/* ── Sidebar ── */}
       <div
         style={{
-          width: 218,
-          minWidth: 218,
+          width: 224,
+          minWidth: 224,
           background: C.bg,
           borderRight: `1px solid ${C.border}`,
           display: "flex",
@@ -1402,7 +1788,7 @@ export default function WarehouseBuilder({
           ))}
         </div>
 
-        {/* Tools — no "Move" mode, just Select / Place / Delete */}
+        {/* Tools */}
         <div style={sec}>
           <span style={slabel}>Tools</span>
           {[
@@ -1427,6 +1813,10 @@ export default function WarehouseBuilder({
         {/* Box type presets */}
         <div style={sec}>
           <span style={slabel}>Box Type</span>
+          <div style={{ marginBottom: 6, fontSize: 9, color: "#2a5070" }}>
+            1 atom = {ATOM}u · default = {DEFAULT_W / ATOM}×{DEFAULT_H / ATOM}×
+            {DEFAULT_D / ATOM} atoms
+          </div>
           {presets.map((p, i) => (
             <button
               key={i}
@@ -1434,12 +1824,15 @@ export default function WarehouseBuilder({
               onClick={() => setActiveSzIdx(i)}
             >
               <span>{p.name}</span>
-              <span style={{ color: C.textMute, fontSize: 10 }}>
-                {p.w}×{p.h}×{p.d}
+              <span style={{ display: "flex", gap: 4, alignItems: "center" }}>
+                <span style={{ color: AXIS_COLORS.w, fontSize: 9 }}>{p.w}</span>
+                <span style={{ color: "#1a3050" }}>×</span>
+                <span style={{ color: AXIS_COLORS.h, fontSize: 9 }}>{p.h}</span>
+                <span style={{ color: "#1a3050" }}>×</span>
+                <span style={{ color: AXIS_COLORS.d, fontSize: 9 }}>{p.d}</span>
               </span>
             </button>
           ))}
-          {/* New type — only show when a box is selected or always from current preset */}
           <button
             onClick={() => setShowNewType(true)}
             style={{
@@ -1452,13 +1845,11 @@ export default function WarehouseBuilder({
             }}
           >
             <span style={{ fontSize: 14 }}>+</span>
-            <span style={{ fontSize: 11 }}>
-              New type from {selectedBox ? "selected" : "current"}…
-            </span>
+            <span style={{ fontSize: 11 }}>New box type…</span>
           </button>
         </div>
 
-        {/* Selected box info panel */}
+        {/* Selected box info */}
         <BoxInfoPanel
           box={selectedBox}
           onEdit={() => {
@@ -1492,7 +1883,7 @@ export default function WarehouseBuilder({
           ))}
         </div>
 
-        {/* Demo mode */}
+        {/* Preview mode */}
         <div style={sec}>
           <span style={slabel}>Preview</span>
           <button
@@ -1544,12 +1935,11 @@ export default function WarehouseBuilder({
             ["R-drag", "pan"],
             ["scroll", "zoom"],
             ["click box", "select"],
-            ["dbl-click", "edit"],
-            ["E", "edit selected"],
+            ["E / dbl-click", "edit box"],
             ["Del", "delete"],
             ["⌃Z / ⌃Y", "undo / redo"],
             ["⌃C / ⌃V", "copy / paste"],
-            ["↑↓←→", "nudge"],
+            ["↑↓←→", "nudge by box size"],
           ].map(([k, v]) => (
             <div
               key={k}

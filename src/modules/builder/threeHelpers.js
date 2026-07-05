@@ -295,22 +295,28 @@ export function buildViewerBoxMesh(box, flags = {}) {
 }
 
 // ─── Floor grid ───────────────────────────────────────────────────────────────
-export function buildGrid(size = GRID_SIZE) {
+// step = atomic unit spacing for minor grid lines; major lines every 4 steps
+export function buildGrid(size = GRID_SIZE, step = 1) {
   const g = new THREE.Group();
   const half = size / 2;
+  const MAJOR_EVERY = 4; // major line every N atoms — matches default box footprint
   const minor = new THREE.LineBasicMaterial({
-    color: 0x0c1e35,
+    color: 0x0a1a2e,
     transparent: true,
-    opacity: 0.5,
+    opacity: 0.45,
   });
   const major = new THREE.LineBasicMaterial({
-    color: 0x173060,
+    color: 0x142840,
     transparent: true,
     opacity: 0.65,
   });
-  for (let i = -half; i <= half; i++) {
-    const m = i % 5 === 0 ? major : minor;
-    const y = i % 5 === 0 ? 0.002 : 0;
+  const count = Math.ceil(size / step);
+  for (let n = -count; n <= count; n++) {
+    const i = n * step;
+    if (Math.abs(i) > half) continue;
+    const isMajor = n % MAJOR_EVERY === 0;
+    const m = isMajor ? major : minor;
+    const y = isMajor ? 0.003 : 0;
     g.add(
       new THREE.Line(
         new THREE.BufferGeometry().setFromPoints([
