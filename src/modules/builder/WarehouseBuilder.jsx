@@ -1241,33 +1241,55 @@ export default function WarehouseBuilder({
     const scene = sceneRef.current;
     if (!scene) return;
     const map = meshMapRef.current;
-    const ids = new Set(boxes.map((b) => b.id));
-    for (const [id, grp] of map.entries()) {
-      if (!ids.has(id)) {
-        scene.remove(grp);
-        disposeGroup(grp);
-        map.delete(id);
-      }
-    }
-    const display = demoMode
+    
+    // Identify which boxes need to be displayed (considering demoMode)
+    const displayBoxes = demoMode
       ? boxes.map((b, i) => ({
           ...b,
           capacity: CAPACITIES[i % CAPACITIES.length],
         }))
       : boxes;
-    for (const box of display) {
-      if (map.has(box.id)) {
-        const old = map.get(box.id);
-        scene.remove(old);
-        disposeGroup(old);
-        map.delete(box.id);
+    
+    const displayIds = new Set(displayBoxes.map((b) => b.id));
+
+    // 1. Remove meshes for boxes no longer in the list
+    for (const [id, { group }] of map.entries()) {
+      if (!displayIds.has(id)) {
+        scene.remove(group);
+        disposeGroup(group);
+        map.delete(id);
       }
-      const grp = buildBoxMesh(box, {
-        selected: box.id === selectedId,
-        hoveredDelete: box.id === delHoverId,
-      });
-      scene.add(grp);
-      map.set(box.id, grp);
+    }
+
+    // 2. Add or update meshes for boxes in the list
+    for (const box of displayBoxes) {
+      const isSelected = box.id === selectedId;
+      const isHoveredDelete = box.id === delHoverId;
+      
+      const existing = map.get(box.id);
+      const needsUpdate = !existing || 
+        existing.flags.selected !== isSelected || 
+        existing.flags.hoveredDelete !== isHoveredDelete ||
+        // Check if box properties changed (position, size, label, capacity)
+        JSON.stringify(existing.boxProps) !== JSON.stringify(box);
+
+      if (needsUpdate) {
+        if (existing) {
+          scene.remove(existing.group);
+          disposeGroup(existing.group);
+        }
+        
+        const group = buildBoxMesh(box, {
+          selected: isSelected,
+          hoveredDelete: isHoveredDelete,
+        });
+        scene.add(group);
+        map.set(box.id, {
+          group,
+          flags: { selected: isSelected, hoveredDelete: isHoveredDelete },
+          boxProps: box,
+        });
+      }
     }
   }, [boxes, selectedId, delHoverId, demoMode]);
 
