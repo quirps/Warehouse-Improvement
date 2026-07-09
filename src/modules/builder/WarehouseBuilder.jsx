@@ -1,6 +1,7 @@
 // src/modules/builder/WarehouseBuilder.jsx
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import * as THREE from "three";
+import warehouseData from "../../data/warehouse.wh.json";
 import {
   BG_COLOR,
   GRID_SIZE,
@@ -17,12 +18,7 @@ import {
 } from "../../data/mockData.js";
 
 // ─── Atomic unit system ───────────────────────────────────────────────────────
-// ATOM is the smallest meaningful floor unit. All box W/D dimensions must be
-// multiples of ATOM so any two boxes can sit flush edge-to-edge.
-// H (height) can be any positive multiple of ATOM too, but is less critical.
-const ATOM = 0.125; // 1/8 au smallest unit
-
-// Default box is 1au (8 atoms) in each direction
+const ATOM = 0.125; 
 const DEFAULT_W = 1.0;
 const DEFAULT_H = 1.0;
 const DEFAULT_D = 1.0;
@@ -37,16 +33,12 @@ const MAX_HISTORY = 60;
 let _id = 1;
 const newId = () => `box_${_id++}`;
 
-// Round to nearest multiple of ATOM
 const snapAtom = (v) => Math.round(v / ATOM) * ATOM;
-// Round to nearest multiple of unit (used for per-box-size grid snapping)
 const snapTo = (v, unit) => Math.round(v / unit) * unit;
 const round2 = (v) => Math.round(v * 100) / 100;
 
-// Clamp a dimension to min 1 atom, max 1.0 (1au), snapped to atom grid
 const clampDim = (v) => Math.max(ATOM, Math.min(1.0, snapAtom(v)));
 
-// ─── Stacking helpers ─────────────────────────────────────────────────────────
 function getColumnTop(boxes, x, z) {
   let top = 0;
   for (const b of boxes) {
@@ -59,7 +51,34 @@ function getColumnTop(boxes, x, z) {
 }
 const stackY = (boxes, x, z, size) => getColumnTop(boxes, x, z) + size.h / 2;
 
-// Near-snap: pull position to flush with a neighbour edge if within 1.0 (a unit)
+// Find all boxes contiguous to the start box (sharing a face)
+function findContiguousBoxes(startId, boxes) {
+  const result = new Set([startId]);
+  const queue = [startId];
+  
+  while (queue.length > 0) {
+    const currentId = queue.shift();
+    const currentBox = boxes.find(b => b.id === currentId);
+    if (!currentBox) continue;
+
+    for (const otherBox of boxes) {
+      if (result.has(otherBox.id)) continue;
+      
+      // Simple bounding box intersection (with small epsilon)
+      const touches = 
+        Math.abs(currentBox.position.x - otherBox.position.x) < (currentBox.size.w + otherBox.size.w) / 2 + 0.01 &&
+        Math.abs(currentBox.position.z - otherBox.position.z) < (currentBox.size.d + otherBox.size.d) / 2 + 0.01 &&
+        Math.abs(currentBox.position.y - otherBox.position.y) < (currentBox.size.h + otherBox.size.h) / 2 + 0.01;
+      
+      if (touches) {
+        result.add(otherBox.id);
+        queue.push(otherBox.id);
+      }
+    }
+  }
+  return result;
+}
+
 function nearSnap(x, z, size, boxes) {
   let nx = x;
   let nz = z;
@@ -81,18 +100,15 @@ function nearSnap(x, z, size, boxes) {
     const halfW = size.w / 2;
     const halfD = size.d / 2;
 
-    // Potential target X/Z positions
     const targets = [
-      { nx: bRightX + halfW, nz: bz }, // Flush right
-      { nx: bLeftX - halfW, nz: bz },  // Flush left
-      { nx: bx, nz: bFarZ + halfD },   // Flush far
-      { nx: bx, nz: bNearZ - halfD },  // Flush near
+      { nx: bRightX + halfW, nz: bz },
+      { nx: bLeftX - halfW, nz: bz },
+      { nx: bx, nz: bFarZ + halfD },
+      { nx: bx, nz: bNearZ - halfD },
     ];
 
     for (const { nx: targetX, nz: targetZ } of targets) {
       const dist = Math.sqrt(Math.pow(x - targetX, 2) + Math.pow(z - targetZ, 2));
-      
-      // Check if both axes are within threshold to snap to this target
       if (dist < SNAP_THRESHOLD && dist < minCombinedDist) {
         minCombinedDist = dist;
         bestX = targetX;
@@ -100,11 +116,9 @@ function nearSnap(x, z, size, boxes) {
       }
     }
   }
-
   return { x: bestX, z: bestZ };
 }
 
-// ─── Colour tokens ────────────────────────────────────────────────────────────
 const C = {
   bg: "#060d1c",
   border: "#0e2540",
@@ -210,10 +224,8 @@ const capDot = (c) => (
   />
 );
 
-// Axis colour coding (W=blue, H=green, D=orange) — consistent everywhere
 const AXIS_COLORS = { w: "#3b82f6", h: "#22c55e", d: "#f97316" };
 
-// ─── Live 3D Box Type Preview (Three.js in a small canvas) ───────────────────
 function BoxTypePreview({ newSize }) {
   const mountRef = useRef(null);
   const sceneRef = useRef(null);
@@ -224,7 +236,6 @@ function BoxTypePreview({ newSize }) {
   const phi = useRef(0.85);
   const ptrState = useRef({ down: false, lx: 0, ly: 0 });
 
-  // Rebuild scene whenever sizes change
   useEffect(() => {
     const el = mountRef.current;
     if (!el) return;
@@ -249,7 +260,6 @@ function BoxTypePreview({ newSize }) {
     }
 
     const scene = sceneRef.current;
-    // Clear old box meshes (keep lights)
     const toRemove = [];
     scene.traverse((o) => {
       if (o.userData.preview) toRemove.push(o);
@@ -265,7 +275,6 @@ function BoxTypePreview({ newSize }) {
       dh = DEFAULT_H,
       dd = DEFAULT_D;
 
-    // Default box ghost (dim wireframe)
     const defGeo = new THREE.BoxGeometry(dw, dh, dd);
     const defEdge = new THREE.EdgesGeometry(defGeo);
     const ghost = new THREE.LineSegments(
@@ -281,7 +290,6 @@ function BoxTypePreview({ newSize }) {
     scene.add(ghost);
     defGeo.dispose();
 
-    // New box — solid with coloured faces per axis
     const nGeo = new THREE.BoxGeometry(w, h, d);
     const mat = new THREE.MeshStandardMaterial({
       color: 0x0d1f35,
@@ -295,62 +303,22 @@ function BoxTypePreview({ newSize }) {
     mesh.position.y = h / 2;
     scene.add(mesh);
 
-    // Coloured edge axes: 4 lines along W (blue), 4 along H (green), 4 along D (orange)
     const hw = w / 2,
       hh = h / 2,
       hd = d / 2;
     const edgeLines = [
-      // W axis — blue — 4 parallel edges
-      [
-        [-hw, -hh, -hd],
-        [hw, -hh, -hd],
-      ],
-      [
-        [-hw, hh, -hd],
-        [hw, hh, -hd],
-      ],
-      [
-        [-hw, -hh, hd],
-        [hw, -hh, hd],
-      ],
-      [
-        [-hw, hh, hd],
-        [hw, hh, hd],
-      ],
-      // H axis — green — 4 parallel edges
-      [
-        [-hw, -hh, -hd],
-        [-hw, hh, -hd],
-      ],
-      [
-        [hw, -hh, -hd],
-        [hw, hh, -hd],
-      ],
-      [
-        [-hw, -hh, hd],
-        [-hw, hh, hd],
-      ],
-      [
-        [hw, -hh, hd],
-        [hw, hh, hd],
-      ],
-      // D axis — orange — 4 parallel edges
-      [
-        [-hw, -hh, -hd],
-        [-hw, -hh, hd],
-      ],
-      [
-        [hw, -hh, -hd],
-        [hw, -hh, hd],
-      ],
-      [
-        [-hw, hh, -hd],
-        [-hw, hh, hd],
-      ],
-      [
-        [hw, hh, -hd],
-        [hw, hh, hd],
-      ],
+      [[-hw, -hh, -hd], [hw, -hh, -hd]],
+      [[-hw, hh, -hd], [hw, hh, -hd]],
+      [[-hw, -hh, hd], [hw, -hh, hd]],
+      [[-hw, hh, hd], [hw, hh, hd]],
+      [[-hw, -hh, -hd], [-hw, hh, -hd]],
+      [[hw, -hh, -hd], [hw, hh, -hd]],
+      [[-hw, -hh, hd], [-hw, hh, hd]],
+      [[hw, -hh, hd], [hw, hh, hd]],
+      [[-hw, -hh, -hd], [-hw, -hh, hd]],
+      [[hw, -hh, -hd], [hw, -hh, hd]],
+      [[-hw, hh, -hd], [-hw, hh, hd]],
+      [[hw, hh, -hd], [hw, hh, hd]],
     ];
     const axisColors = [
       0x3b82f6, 0x3b82f6, 0x3b82f6, 0x3b82f6, 0x22c55e, 0x22c55e, 0x22c55e,
@@ -370,7 +338,6 @@ function BoxTypePreview({ newSize }) {
       scene.add(line);
     });
 
-    // Fit camera to the larger of the two boxes
     const maxDim = Math.max(w, h, d, dw, dh, dd);
     camRef.current.aspect = W / H;
     camRef.current.updateProjectionMatrix();
@@ -392,7 +359,6 @@ function BoxTypePreview({ newSize }) {
     const tick = () => {
       if (!live) return;
       rafRef.current = requestAnimationFrame(tick);
-      // Slow auto-rotate when not being manipulated
       if (!ptrState.current.down) {
         theta.current += 0.005;
         applyOrbitCam();
@@ -408,7 +374,6 @@ function BoxTypePreview({ newSize }) {
     };
   }, [newSize.w, newSize.h, newSize.d]);
 
-  // Cleanup renderer on unmount
   useEffect(() => {
     return () => {
       cancelAnimationFrame(rafRef.current);
@@ -461,7 +426,6 @@ function BoxTypePreview({ newSize }) {
   );
 }
 
-// ─── New Box Type Dialog ──────────────────────────────────────────────────────
 function NewTypeDialog({ baseSize, onAdd, onCancel }) {
   const [name, setName] = useState("");
   const [size, setSize] = useState({
@@ -472,11 +436,6 @@ function NewTypeDialog({ baseSize, onAdd, onCancel }) {
   const [nameErr, setNameErr] = useState(false);
 
   const atoms = { w: size.w / ATOM, h: size.h / ATOM, d: size.d / ATOM };
-  const defAtoms = {
-    w: DEFAULT_W / ATOM,
-    h: DEFAULT_H / ATOM,
-    d: DEFAULT_D / ATOM,
-  };
 
   const adjust = (axis, delta) => {
     setSize((prev) => {
@@ -541,7 +500,6 @@ function NewTypeDialog({ baseSize, onAdd, onCancel }) {
           <div
             style={{ flex: 1, display: "flex", alignItems: "center", gap: 6 }}
           >
-            {/* Atom dots */}
             <div style={{ display: "flex", gap: 2 }}>
               {Array.from({ length: Math.max(aCount, dCount) }).map((_, i) => (
                 <div
@@ -586,7 +544,6 @@ function NewTypeDialog({ baseSize, onAdd, onCancel }) {
             +
           </button>
         </div>
-        {/* Size bar vs default */}
         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
           <div style={{ width: 6 }} />
           <div
@@ -668,11 +625,7 @@ function NewTypeDialog({ baseSize, onAdd, onCancel }) {
         >
           NEW BOX TYPE
         </div>
-
-        {/* Live 3D preview */}
         <BoxTypePreview newSize={size} />
-
-        {/* Axis legend */}
         <div style={{ display: "flex", gap: 14 }}>
           {Object.entries(AXIS_COLORS).map(([ax, col]) => (
             <div
@@ -696,8 +649,6 @@ function NewTypeDialog({ baseSize, onAdd, onCancel }) {
             Ghost = default ({DEFAULT_W}×{DEFAULT_H}×{DEFAULT_D})
           </span>
         </div>
-
-        {/* Dimension controls */}
         <div
           style={{
             background: "#080f1a",
@@ -724,8 +675,6 @@ function NewTypeDialog({ baseSize, onAdd, onCancel }) {
             </span>
           </div>
         </div>
-
-        {/* Name */}
         <div>
           <label style={{ ...slabel, marginBottom: 6 }}>Box Type Name</label>
           <input
@@ -755,7 +704,6 @@ function NewTypeDialog({ baseSize, onAdd, onCancel }) {
             </div>
           )}
         </div>
-
         <div style={{ display: "flex", gap: 8 }}>
           <button
             style={{
@@ -792,7 +740,6 @@ function NewTypeDialog({ baseSize, onAdd, onCancel }) {
   );
 }
 
-// ─── Edit Dialog ──────────────────────────────────────────────────────────────
 function EditDialog({ box, labelDraft, setLabelDraft, onConfirm, onCancel }) {
   const [cap, setCap] = useState(box.capacity);
   return (
@@ -940,7 +887,6 @@ function EditDialog({ box, labelDraft, setLabelDraft, onConfirm, onCancel }) {
   );
 }
 
-// ─── Box Info Panel ───────────────────────────────────────────────────────────
 function BoxInfoPanel({ box, onEdit, onDelete }) {
   if (!box) return null;
   const cap = CAPACITY_COLORS[box.capacity] || CAPACITY_COLORS.Unset;
@@ -1041,7 +987,6 @@ function BoxInfoPanel({ box, onEdit, onDelete }) {
   );
 }
 
-// ─── Main Component ───────────────────────────────────────────────────────────
 export default function WarehouseBuilder({
   initialBoxes = null,
   onSave = null,
@@ -1071,7 +1016,7 @@ export default function WarehouseBuilder({
 
   const [boxes, setBoxes] = useState(initialBoxes || []);
   const [region, setRegion] = useState("MH");
-  const [selectedId, setSelectedId] = useState(null);
+  const [selectedIds, setSelectedIds] = useState(new Set());
   const [tool, setTool] = useState("select");
   const [presets, setPresets] = useState(DEFAULT_PRESETS);
   const [activeSzIdx, setActiveSzIdx] = useState(0);
@@ -1087,8 +1032,27 @@ export default function WarehouseBuilder({
   const historyRef = useRef([]);
   const futureRef = useRef([]);
 
+  useEffect(() => {
+    if (warehouseData) {
+      console.log("Builder: Data imported:", warehouseData);
+      if (warehouseData.region) setRegion(warehouseData.region);
+      if (warehouseData.presets && Array.isArray(warehouseData.presets)) setPresets(warehouseData.presets);
+      if (Array.isArray(warehouseData.boxes)) {
+        const mx = warehouseData.boxes.reduce(
+          (m, b) =>
+            Math.max(m, parseInt((b.id || "").replace("box_", "")) || 0),
+          0,
+        );
+        _id = mx + 1;
+        commitBoxes(warehouseData.boxes, []);
+        setSelectedIds(new Set());
+        status(`Loaded ${warehouseData.boxes.length} boxes`);
+      }
+    }
+  }, []);
+
   const bRef = useRef(boxes);
-  const selRef = useRef(selectedId);
+  const selIdsRef = useRef(selectedIds);
   const toolRef = useRef(tool);
   const szRef = useRef(activeSzIdx);
   const presRef = useRef(presets);
@@ -1101,8 +1065,8 @@ export default function WarehouseBuilder({
     bRef.current = boxes;
   }, [boxes]);
   useEffect(() => {
-    selRef.current = selectedId;
-  }, [selectedId]);
+    selIdsRef.current = selectedIds;
+  }, [selectedIds]);
   useEffect(() => {
     toolRef.current = tool;
   }, [tool]);
@@ -1145,7 +1109,7 @@ export default function WarehouseBuilder({
     ];
     historyRef.current = h.slice(0, -1);
     setBoxes(h[h.length - 1]);
-    setSelectedId(null);
+    setSelectedIds(new Set());
     status("Undo");
   }, [status]);
 
@@ -1161,7 +1125,7 @@ export default function WarehouseBuilder({
     ];
     futureRef.current = f.slice(1);
     setBoxes(f[0]);
-    setSelectedId(null);
+    setSelectedIds(new Set());
     status("Redo");
   }, [status]);
 
@@ -1178,7 +1142,6 @@ export default function WarehouseBuilder({
     cam.lookAt(camTarget.current);
   }, []);
 
-  // ── Scene init ──────────────────────────────────────────────────────────────
   useEffect(() => {
     const el = mountRef.current;
     const W = el.clientWidth,
@@ -1198,7 +1161,6 @@ export default function WarehouseBuilder({
     camRef.current = cam;
     applyCamera();
     addSceneLights(scene);
-    // Grid at ATOM spacing up to a reasonable size
     scene.add(buildGrid(40, ATOM));
     const floor = new THREE.Mesh(
       new THREE.PlaneGeometry(200, 200),
@@ -1236,23 +1198,24 @@ export default function WarehouseBuilder({
     };
   }, [applyCamera]);
 
-  // ── Sync boxes → meshes ─────────────────────────────────────────────────────
+  const displayBoxes = useMemo(
+    () =>
+      demoMode
+        ? boxes.map((b, i) => ({
+            ...b,
+            capacity: CAPACITIES[i % CAPACITIES.length],
+          }))
+        : boxes,
+    [boxes, demoMode],
+  );
+
   useEffect(() => {
     const scene = sceneRef.current;
     if (!scene) return;
     const map = meshMapRef.current;
-    
-    // Identify which boxes need to be displayed (considering demoMode)
-    const displayBoxes = demoMode
-      ? boxes.map((b, i) => ({
-          ...b,
-          capacity: CAPACITIES[i % CAPACITIES.length],
-        }))
-      : boxes;
-    
+
     const displayIds = new Set(displayBoxes.map((b) => b.id));
 
-    // 1. Remove meshes for boxes no longer in the list
     for (const [id, { group }] of map.entries()) {
       if (!displayIds.has(id)) {
         scene.remove(group);
@@ -1261,24 +1224,22 @@ export default function WarehouseBuilder({
       }
     }
 
-    // 2. Add or update meshes for boxes in the list
     for (const box of displayBoxes) {
-      const isSelected = box.id === selectedId;
+      const isSelected = selectedIds.has(box.id);
       const isHoveredDelete = box.id === delHoverId;
-      
+
       const existing = map.get(box.id);
       const needsUpdate = !existing || 
         existing.flags.selected !== isSelected || 
         existing.flags.hoveredDelete !== isHoveredDelete ||
-        // Check if box properties changed (position, size, label, capacity)
-        JSON.stringify(existing.boxProps) !== JSON.stringify(box);
+        existing.boxProps !== box;
 
       if (needsUpdate) {
         if (existing) {
           scene.remove(existing.group);
           disposeGroup(existing.group);
         }
-        
+
         const group = buildBoxMesh(box, {
           selected: isSelected,
           hoveredDelete: isHoveredDelete,
@@ -1291,9 +1252,8 @@ export default function WarehouseBuilder({
         });
       }
     }
-  }, [boxes, selectedId, delHoverId, demoMode]);
+  }, [boxes, selectedIds, delHoverId, demoMode]);
 
-  // ── Ghost update ────────────────────────────────────────────────────────────
   useEffect(() => {
     const ghost = ghostRef.current;
     if (!ghost) return;
@@ -1309,7 +1269,6 @@ export default function WarehouseBuilder({
     } else ghost.visible = false;
   }, [hoverPos, tool, activeSzIdx, boxes]);
 
-  // ── Raycasting ──────────────────────────────────────────────────────────────
   const getNDC = useCallback((e) => {
     const r = mountRef.current.getBoundingClientRect();
     return new THREE.Vector2(
@@ -1322,8 +1281,8 @@ export default function WarehouseBuilder({
     const rc = rcRef.current;
     rc.setFromCamera(ndc, camRef.current);
     const meshes = [];
-    for (const grp of meshMapRef.current.values())
-      grp.traverse((c) => {
+    for (const entry of meshMapRef.current.values())
+      entry.group.traverse((c) => {
         if (c.isMesh) meshes.push(c);
       });
     const hits = rc.intersectObjects(meshes);
@@ -1338,8 +1297,6 @@ export default function WarehouseBuilder({
     return null;
   }, []);
 
-  // Compute floor position using the fine ATOM snap grid (0.125),
-  // then apply near-snap to pull to adjacent box edges
   const getFloorPos = useCallback((hit, preset) => {
     if (!hit) return null;
     let raw;
@@ -1351,16 +1308,13 @@ export default function WarehouseBuilder({
         : { x: hit.point.x, z: hit.point.z };
     } else return null;
 
-    // Snap to the fine ATOM grid (0.125) for smooth movement
     let x = snapAtom(raw.x);
     let z = snapAtom(raw.z);
 
-    // Near-snap: pull edges flush to neighbours
     const snapped = nearSnap(x, z, preset, bRef.current);
     return snapped;
   }, []);
 
-  // ── Pointer handlers ────────────────────────────────────────────────────────
   const onPtrDown = useCallback((e) => {
     if (editRef.current) return;
     ptrState.current = {
@@ -1409,7 +1363,7 @@ export default function WarehouseBuilder({
           .crossVectors(right, new THREE.Vector3(0, 1, 0))
           .normalize();
         camTarget.current.addScaledVector(right, -dx * 0.022);
-        camTarget.current.addScaledVector(up2, dy * 0.022);
+        camTarget.current.addScaledVector(up2, -dy * 0.022);
       }
       applyCamera();
       ps.lx = e.clientX;
@@ -1438,28 +1392,34 @@ export default function WarehouseBuilder({
         const nb = {
           id: newId(),
           label: "",
-          presetName: p.name, // ← save the type name on the placed box
+          presetName: p.name,
           position: { x: pos.x, y, z: pos.z },
           size: { w: p.w, h: p.h, d: p.d },
           capacity: "Unset",
         };
         commitBoxes([...prev, nb], prev);
-        setSelectedId(nb.id);
+        setSelectedIds(new Set([nb.id]));
         status(`Placed "${p.name}"`);
       } else if (t === "select") {
         if (hit?.type === "box") {
-          setSelectedId(hit.boxId);
-          if (isDbl) {
-            const box = bRef.current.find((b) => b.id === hit.boxId);
-            setLabelDraft(box?.label || "");
-            setEditingBox({ id: hit.boxId });
-            status("Editing");
-          } else
-            status(
-              "Selected · E or double-click to edit · arrow keys to nudge",
-            );
+          if (e.shiftKey) {
+            const contiguousIds = findContiguousBoxes(hit.boxId, bRef.current);
+            setSelectedIds(contiguousIds);
+            status("Selected contiguous group");
+          } else {
+            setSelectedIds(new Set([hit.boxId]));
+            if (isDbl) {
+              const box = bRef.current.find((b) => b.id === hit.boxId);
+              setLabelDraft(box?.label || "");
+              setEditingBox({ id: hit.boxId });
+              status("Editing");
+            } else
+              status(
+                "Selected · E or double-click to edit · arrow keys to nudge",
+              );
+          }
         } else {
-          setSelectedId(null);
+          setSelectedIds(new Set());
           status("Click a box to select");
         }
       } else if (t === "delete") {
@@ -1469,7 +1429,7 @@ export default function WarehouseBuilder({
             prev.filter((b) => b.id !== hit.boxId),
             prev,
           );
-          setSelectedId(null);
+          setSelectedIds(new Set());
           setDelHoverId(null);
           status("Deleted · Ctrl+Z to undo");
         }
@@ -1531,7 +1491,6 @@ export default function WarehouseBuilder({
     [applyCamera],
   );
 
-  // ── Keyboard shortcuts ──────────────────────────────────────────────────────
   useEffect(() => {
     const onKey = (e) => {
       if (editRef.current) {
@@ -1541,7 +1500,7 @@ export default function WarehouseBuilder({
         }
         return;
       }
-      const sel = selRef.current;
+      const selIds = selIdsRef.current;
       if ((e.ctrlKey || e.metaKey) && e.key === "z" && !e.shiftKey) {
         e.preventDefault();
         undo();
@@ -1556,17 +1515,19 @@ export default function WarehouseBuilder({
         return;
       }
       if (e.key === "e" || e.key === "E") {
-        if (sel) {
-          const b = bRef.current.find((b) => b.id === sel);
+        if (selIds.size === 1) {
+          const id = Array.from(selIds)[0];
+          const b = bRef.current.find((b) => b.id === id);
           setLabelDraft(b?.label || "");
-          setEditingBox({ id: sel });
+          setEditingBox({ id: id });
           status("Editing");
         }
         return;
       }
       if ((e.ctrlKey || e.metaKey) && e.key === "c") {
-        if (sel) {
-          const b = bRef.current.find((b) => b.id === sel);
+        if (selIds.size === 1) {
+          const id = Array.from(selIds)[0];
+          const b = bRef.current.find((b) => b.id === id);
           if (b) {
             setClipboard({ ...b });
             status("Copied");
@@ -1583,7 +1544,7 @@ export default function WarehouseBuilder({
         const ny = stackY(prev, nx, nz, cb.size);
         const nb = { ...cb, id: newId(), position: { x: nx, y: ny, z: nz } };
         commitBoxes([...prev, nb], prev);
-        setSelectedId(nb.id);
+        setSelectedIds(new Set([nb.id]));
         status("Pasted");
         return;
       }
@@ -1591,39 +1552,60 @@ export default function WarehouseBuilder({
         (e.key === "Delete" || e.key === "Backspace") &&
         !e.target.matches("input,textarea")
       ) {
-        if (sel) {
+        if (selIds.size > 0) {
           const prev = bRef.current;
           commitBoxes(
-            prev.filter((b) => b.id !== sel),
+            prev.filter((b) => !selIds.has(b.id)),
             prev,
           );
-          setSelectedId(null);
+          setSelectedIds(new Set());
           status("Deleted");
         }
         return;
       }
-      // Arrow keys nudge by the box's own footprint size
-      const NUDGE = {
-        ArrowLeft: [-1, 0],
-        ArrowRight: [1, 0],
-        ArrowUp: [0, -1],
-        ArrowDown: [0, 1],
+      // Arrow keys nudge by a fine step (1 ATOM) relative to view
+      const NUDGE_REL = {
+        ArrowUp:    { x: 0, z: -1 },
+        ArrowDown:  { x: 0, z: 1 },
+        ArrowLeft:  { x: -1, z: 0 },
+        ArrowRight: { x: 1, z: 0 },
       };
-      if (NUDGE[e.key] && sel) {
+
+      if (NUDGE_REL[e.key] && selIds.size > 0) {
         e.preventDefault();
-        const [dxu, dzu] = NUDGE[e.key];
+        
+        // 1. Get Camera Forward/Right vectors projected onto XZ plane
+        const cam = camRef.current;
+        const forward = new THREE.Vector3();
+        cam.getWorldDirection(forward);
+        forward.y = 0; // Project to XZ
+        forward.normalize();
+        
+        const right = new THREE.Vector3().crossVectors(forward, new THREE.Vector3(0, 1, 0)).normalize();
+        
+        // 2. Map Key to relative movement
+        const dir = NUDGE_REL[e.key];
+        const moveDir = new THREE.Vector3();
+        moveDir.addScaledVector(forward, -dir.z); // Up/Down maps to Forward/Backward
+        moveDir.addScaledVector(right, dir.x);    // Left/Right maps to Right/Left
+        moveDir.normalize();
+
+        const STEP = 1 * ATOM;
+        const stepX = moveDir.x * STEP;
+        const stepZ = moveDir.z * STEP;
+
         const prev = bRef.current;
-        const selBox = prev.find((b) => b.id === sel);
-        if (!selBox) return;
-        const stepX = Math.max(ATOM, selBox.size.w) * dxu;
-        const stepZ = Math.max(ATOM, selBox.size.d) * dzu;
+
         commitBoxes(
           prev.map((b) => {
-            if (b.id !== sel) return b;
-            const nx = snapTo(b.position.x + stepX, Math.max(ATOM, b.size.w));
-            const nz = snapTo(b.position.z + stepZ, Math.max(ATOM, b.size.d));
+            if (!selIds.has(b.id)) return b;
+            
+            // Apply step and snap to ATOM grid
+            const nx = snapAtom(b.position.x + stepX);
+            const nz = snapAtom(b.position.z + stepZ);
+            
             const ny = stackY(
-              prev.filter((x) => x.id !== sel),
+              prev.filter((x) => !selIds.has(x.id)),
               nx,
               nz,
               b.size,
@@ -1638,7 +1620,6 @@ export default function WarehouseBuilder({
     return () => window.removeEventListener("keydown", onKey);
   }, [undo, redo, commitBoxes, status]);
 
-  // ── Export / Import ─────────────────────────────────────────────────────────
   const exportJSON = () => {
     const data = { region, boxes, presets };
     const blob = new Blob([JSON.stringify(data, null, 2)], {
@@ -1676,7 +1657,7 @@ export default function WarehouseBuilder({
             );
             _id = mx + 1;
             commitBoxes(loadedBoxes, bRef.current);
-            setSelectedId(null);
+            setSelectedIds(new Set());
             status(`Loaded ${loadedBoxes.length} boxes`);
           }
         } catch {
@@ -1713,7 +1694,7 @@ export default function WarehouseBuilder({
     status(`Box type "${preset.name}" added`);
   };
 
-  const selectedBox = boxes.find((b) => b.id === selectedId);
+  const selectedBox = boxes.find((b) => selectedIds.has(b.id));
   const activePreset = presets[activeSzIdx] || presets[0];
   const cursor =
     tool === "place" ? "crosshair" : tool === "delete" ? "no-drop" : "default";
@@ -1730,7 +1711,6 @@ export default function WarehouseBuilder({
         position: "relative",
       }}
     >
-      {/* ── Sidebar ── */}
       <div
         style={{
           width: 224,
@@ -1755,8 +1735,6 @@ export default function WarehouseBuilder({
         >
           ⬡ WH BUILDER
         </div>
-
-        {/* Warehouse region */}
         <div style={sec}>
           <span style={slabel}>Warehouse</span>
           <div style={{ display: "flex", gap: 6 }}>
@@ -1784,8 +1762,6 @@ export default function WarehouseBuilder({
             Saved in export — sets viewer region on load
           </div>
         </div>
-
-        {/* Undo / Redo */}
         <div style={{ ...sec, display: "flex", gap: 6 }}>
           {[
             ["↩ Undo", undo],
@@ -1809,8 +1785,6 @@ export default function WarehouseBuilder({
             </button>
           ))}
         </div>
-
-        {/* Tools */}
         <div style={sec}>
           <span style={slabel}>Tools</span>
           {[
@@ -1831,8 +1805,6 @@ export default function WarehouseBuilder({
             </button>
           ))}
         </div>
-
-        {/* Box type presets */}
         <div style={sec}>
           <span style={slabel}>Box Type</span>
           <div style={{ marginBottom: 6, fontSize: 9, color: "#2a5070" }}>
@@ -1870,26 +1842,24 @@ export default function WarehouseBuilder({
             <span style={{ fontSize: 11 }}>New box type…</span>
           </button>
         </div>
-
-        {/* Selected box info */}
         <BoxInfoPanel
           box={selectedBox}
           onEdit={() => {
-            setLabelDraft(selectedBox?.label || "");
-            setEditingBox({ id: selectedId });
+            const firstId = Array.from(selectedIds)[0];
+            const box = boxes.find((b) => b.id === firstId);
+            setLabelDraft(box?.label || "");
+            setEditingBox({ id: firstId });
           }}
           onDelete={() => {
             const prev = bRef.current;
             commitBoxes(
-              prev.filter((b) => b.id !== selectedId),
+              prev.filter((b) => !selectedIds.has(b.id)),
               prev,
             );
-            setSelectedId(null);
+            setSelectedIds(new Set());
             status("Deleted");
           }}
         />
-
-        {/* Capacity key */}
         <div style={sec}>
           <span style={slabel}>Capacity</span>
           {CAPACITIES.map((c) => (
@@ -1904,8 +1874,6 @@ export default function WarehouseBuilder({
             </div>
           ))}
         </div>
-
-        {/* Preview mode */}
         <div style={sec}>
           <span style={slabel}>Preview</span>
           <button
@@ -1924,8 +1892,6 @@ export default function WarehouseBuilder({
             {demoMode ? "◉ Capacity ON" : "○ Preview capacities"}
           </button>
         </div>
-
-        {/* File */}
         <div style={sec}>
           <span style={slabel}>File</span>
           <button style={abtn} onClick={exportJSON}>
@@ -1940,7 +1906,7 @@ export default function WarehouseBuilder({
               if (confirm("Clear all boxes?")) {
                 const prev = bRef.current;
                 commitBoxes([], prev);
-                setSelectedId(null);
+                setSelectedIds(new Set());
                 status("Cleared");
               }
             }}
@@ -1948,8 +1914,6 @@ export default function WarehouseBuilder({
             ⊗ Clear All
           </button>
         </div>
-
-        {/* Shortcuts */}
         <div style={{ padding: "10px 14px 16px", flexShrink: 0 }}>
           <span style={{ ...slabel, marginBottom: 10 }}>Shortcuts</span>
           {[
@@ -1961,7 +1925,7 @@ export default function WarehouseBuilder({
             ["Del", "delete"],
             ["⌃Z / ⌃Y", "undo / redo"],
             ["⌃C / ⌃V", "copy / paste"],
-            ["↑↓←→", "nudge by box size"],
+            ["↑↓←→", "nudge view-relative"],
           ].map(([k, v]) => (
             <div
               key={k}
@@ -1978,8 +1942,6 @@ export default function WarehouseBuilder({
           ))}
         </div>
       </div>
-
-      {/* ── 3D canvas ── */}
       <div
         ref={mountRef}
         style={{ flex: 1, position: "relative", overflow: "hidden", cursor }}
@@ -1992,8 +1954,6 @@ export default function WarehouseBuilder({
         onTouchMove={onTouchMove}
         onContextMenu={(e) => e.preventDefault()}
       />
-
-      {/* ── Status bar ── */}
       <div
         style={{
           position: "absolute",
@@ -2021,8 +1981,6 @@ export default function WarehouseBuilder({
           </span>
         )}
       </div>
-
-      {/* ── Edit dialog ── */}
       {editingBox &&
         (() => {
           const box = boxes.find((b) => b.id === editingBox.id);
@@ -2040,8 +1998,6 @@ export default function WarehouseBuilder({
             />
           );
         })()}
-
-      {/* ── New type dialog ── */}
       {showNewType && (
         <NewTypeDialog
           baseSize={selectedBox?.size || activePreset}

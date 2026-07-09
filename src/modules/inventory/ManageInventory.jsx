@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useInventory } from "../../hooks/useInventory.js";
 import WarehouseViewer from "./WarehouseViewer.jsx";
 import { ScannedItemCard } from "./ScannedItemCard.jsx";
+import warehouseData from "../../data/warehouse.wh.json";
 import {
   ITEM_TYPES,
   MOCK_ITEMS,
@@ -935,6 +936,21 @@ export default function ManageInventory() {
   const [activeItem, setActiveItem] = useState(null); // clicked mock item
   const [customLayout, setCustomLayout] = useState(null); // loaded from .wh.json
   const [layoutName, setLayoutName] = useState(null);
+
+  useEffect(() => {
+    if (warehouseData) {
+      console.log("Viewer: Data imported:", warehouseData);
+      const rawBoxes = warehouseData.boxes || (Array.isArray(warehouseData) ? warehouseData : null);
+      if (rawBoxes) {
+        const enriched = generateLayoutData(rawBoxes);
+        setCustomLayout(enriched);
+        setLayoutName("warehouse.wh.json");
+        if (warehouseData.region && ["MH", "CW", "AW"].includes(warehouseData.region)) {
+          inv.setRegion(warehouseData.region);
+        }
+      }
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // When an item is clicked in the mock panel, set as dominantType filter
   const handleSelectItem = useCallback((item) => {

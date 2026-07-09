@@ -1,0 +1,2835 @@
+{
+  "region": "MH",
+  "boxes": [
+    {
+      "id": "box_1",
+      "label": "",
+      "presetName": "Main",
+      "position": {
+        "x": -9.75,
+        "y": 0.375,
+        "z": 19.5
+      },
+      "size": {
+        "w": 0.75,
+        "h": 0.75,
+        "d": 0.75
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_2",
+      "label": "",
+      "presetName": "Main",
+      "position": {
+        "x": -9,
+        "y": 0.375,
+        "z": 19.5
+      },
+      "size": {
+        "w": 0.75,
+        "h": 0.75,
+        "d": 0.75
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_3",
+      "label": "",
+      "presetName": "Main",
+      "position": {
+        "x": -8.25,
+        "y": 0.375,
+        "z": 19.5
+      },
+      "size": {
+        "w": 0.75,
+        "h": 0.75,
+        "d": 0.75
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_4",
+      "label": "",
+      "presetName": "Main",
+      "position": {
+        "x": -7.5,
+        "y": 0.375,
+        "z": 19.5
+      },
+      "size": {
+        "w": 0.75,
+        "h": 0.75,
+        "d": 0.75
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_5",
+      "label": "",
+      "presetName": "Main",
+      "position": {
+        "x": -6.75,
+        "y": 0.375,
+        "z": 19.5
+      },
+      "size": {
+        "w": 0.75,
+        "h": 0.75,
+        "d": 0.75
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_6",
+      "label": "",
+      "presetName": "Main",
+      "position": {
+        "x": -6,
+        "y": 0.375,
+        "z": 19.5
+      },
+      "size": {
+        "w": 0.75,
+        "h": 0.75,
+        "d": 0.75
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_7",
+      "label": "",
+      "presetName": "Main",
+      "position": {
+        "x": -5.25,
+        "y": 0.375,
+        "z": 19.5
+      },
+      "size": {
+        "w": 0.75,
+        "h": 0.75,
+        "d": 0.75
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_8",
+      "label": "",
+      "presetName": "Main",
+      "position": {
+        "x": -4.5,
+        "y": 0.375,
+        "z": 19.5
+      },
+      "size": {
+        "w": 0.75,
+        "h": 0.75,
+        "d": 0.75
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_9",
+      "label": "",
+      "presetName": "Main",
+      "position": {
+        "x": -3.75,
+        "y": 0.375,
+        "z": 19.5
+      },
+      "size": {
+        "w": 0.75,
+        "h": 0.75,
+        "d": 0.75
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_10",
+      "label": "",
+      "presetName": "Main",
+      "position": {
+        "x": -3,
+        "y": 0.375,
+        "z": 19.5
+      },
+      "size": {
+        "w": 0.75,
+        "h": 0.75,
+        "d": 0.75
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_11",
+      "label": "",
+      "presetName": "Main",
+      "position": {
+        "x": -2.25,
+        "y": 0.375,
+        "z": 19.5
+      },
+      "size": {
+        "w": 0.75,
+        "h": 0.75,
+        "d": 0.75
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_12",
+      "label": "",
+      "presetName": "Main",
+      "position": {
+        "x": -1.5,
+        "y": 0.375,
+        "z": 19.5
+      },
+      "size": {
+        "w": 0.75,
+        "h": 0.75,
+        "d": 0.75
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_19",
+      "label": "",
+      "presetName": "Large-Wide",
+      "position": {
+        "x": -1.875,
+        "y": 0.375,
+        "z": 16.5
+      },
+      "size": {
+        "w": 0.875,
+        "h": 0.75,
+        "d": 0.75
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_20",
+      "label": "",
+      "presetName": "Large-Wide",
+      "position": {
+        "x": -2.75,
+        "y": 0.375,
+        "z": 16.5
+      },
+      "size": {
+        "w": 0.875,
+        "h": 0.75,
+        "d": 0.75
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_21",
+      "label": "",
+      "presetName": "Large-Wide",
+      "position": {
+        "x": -3.625,
+        "y": 0.375,
+        "z": 16.5
+      },
+      "size": {
+        "w": 0.875,
+        "h": 0.75,
+        "d": 0.75
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_22",
+      "label": "",
+      "presetName": "Large-Wide",
+      "position": {
+        "x": -4.5,
+        "y": 0.375,
+        "z": 16.5
+      },
+      "size": {
+        "w": 0.875,
+        "h": 0.75,
+        "d": 0.75
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_23",
+      "label": "",
+      "presetName": "Large-Wide",
+      "position": {
+        "x": -5.375,
+        "y": 0.375,
+        "z": 16.5
+      },
+      "size": {
+        "w": 0.875,
+        "h": 0.75,
+        "d": 0.75
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_24",
+      "label": "",
+      "presetName": "Large-Wide",
+      "position": {
+        "x": -6.25,
+        "y": 0.375,
+        "z": 16.5
+      },
+      "size": {
+        "w": 0.875,
+        "h": 0.75,
+        "d": 0.75
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_25",
+      "label": "",
+      "presetName": "Large-Wide",
+      "position": {
+        "x": -7.125,
+        "y": 0.375,
+        "z": 16.5
+      },
+      "size": {
+        "w": 0.875,
+        "h": 0.75,
+        "d": 0.75
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_26",
+      "label": "",
+      "presetName": "Large-Wide",
+      "position": {
+        "x": -8,
+        "y": 0.375,
+        "z": 16.5
+      },
+      "size": {
+        "w": 0.875,
+        "h": 0.75,
+        "d": 0.75
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_27",
+      "label": "",
+      "presetName": "Large-Wide",
+      "position": {
+        "x": -8.875,
+        "y": 0.375,
+        "z": 16.5
+      },
+      "size": {
+        "w": 0.875,
+        "h": 0.75,
+        "d": 0.75
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_28",
+      "label": "",
+      "presetName": "Large-Wide",
+      "position": {
+        "x": -9.75,
+        "y": 0.375,
+        "z": 16.5
+      },
+      "size": {
+        "w": 0.875,
+        "h": 0.75,
+        "d": 0.75
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_29",
+      "label": "",
+      "presetName": "Large-Wide",
+      "position": {
+        "x": -10.625,
+        "y": 0.375,
+        "z": 16.5
+      },
+      "size": {
+        "w": 0.875,
+        "h": 0.75,
+        "d": 0.75
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_30",
+      "label": "",
+      "presetName": "Large-Wide",
+      "position": {
+        "x": -11.5,
+        "y": 0.375,
+        "z": 16.5
+      },
+      "size": {
+        "w": 0.875,
+        "h": 0.75,
+        "d": 0.75
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_32",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -1.375,
+        "y": 0.3125,
+        "z": 14.625
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_33",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -2,
+        "y": 0.3125,
+        "z": 14.625
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_34",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -2.625,
+        "y": 0.3125,
+        "z": 14.625
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_35",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -3.25,
+        "y": 0.3125,
+        "z": 14.625
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_36",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -3.875,
+        "y": 0.3125,
+        "z": 14.625
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_37",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -4.5,
+        "y": 0.3125,
+        "z": 14.625
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_38",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -5.125,
+        "y": 0.3125,
+        "z": 14.625
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_39",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -5.75,
+        "y": 0.3125,
+        "z": 14.625
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_40",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -6.375,
+        "y": 0.3125,
+        "z": 14.625
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_41",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -7,
+        "y": 0.3125,
+        "z": 14.625
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_42",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -7.625,
+        "y": 0.3125,
+        "z": 14.625
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_43",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -8.25,
+        "y": 0.3125,
+        "z": 14.625
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_44",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -8.875,
+        "y": 0.3125,
+        "z": 14.625
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_45",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -9.5,
+        "y": 0.3125,
+        "z": 14.625
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_47",
+      "label": "",
+      "presetName": "Main",
+      "position": {
+        "x": -11.5,
+        "y": 0.375,
+        "z": 17.25
+      },
+      "size": {
+        "w": 0.75,
+        "h": 0.75,
+        "d": 0.75
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_48",
+      "label": "",
+      "presetName": "Main",
+      "position": {
+        "x": -10.75,
+        "y": 0.375,
+        "z": 17.25
+      },
+      "size": {
+        "w": 0.75,
+        "h": 0.75,
+        "d": 0.75
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_49",
+      "label": "",
+      "presetName": "Main",
+      "position": {
+        "x": -10,
+        "y": 0.375,
+        "z": 17.25
+      },
+      "size": {
+        "w": 0.75,
+        "h": 0.75,
+        "d": 0.75
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_50",
+      "label": "",
+      "presetName": "Main",
+      "position": {
+        "x": -9.25,
+        "y": 0.375,
+        "z": 17.25
+      },
+      "size": {
+        "w": 0.75,
+        "h": 0.75,
+        "d": 0.75
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_51",
+      "label": "",
+      "presetName": "Main",
+      "position": {
+        "x": -8.5,
+        "y": 0.375,
+        "z": 17.25
+      },
+      "size": {
+        "w": 0.75,
+        "h": 0.75,
+        "d": 0.75
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_52",
+      "label": "",
+      "presetName": "Main",
+      "position": {
+        "x": -7.75,
+        "y": 0.375,
+        "z": 17.25
+      },
+      "size": {
+        "w": 0.75,
+        "h": 0.75,
+        "d": 0.75
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_53",
+      "label": "",
+      "presetName": "Main",
+      "position": {
+        "x": -7.125,
+        "y": 0.375,
+        "z": 17.25
+      },
+      "size": {
+        "w": 0.75,
+        "h": 0.75,
+        "d": 0.75
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_54",
+      "label": "",
+      "presetName": "Main",
+      "position": {
+        "x": -6.375,
+        "y": 0.375,
+        "z": 17.25
+      },
+      "size": {
+        "w": 0.75,
+        "h": 0.75,
+        "d": 0.75
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_55",
+      "label": "",
+      "presetName": "Main",
+      "position": {
+        "x": -5.625,
+        "y": 0.375,
+        "z": 17.25
+      },
+      "size": {
+        "w": 0.75,
+        "h": 0.75,
+        "d": 0.75
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_56",
+      "label": "",
+      "presetName": "Main",
+      "position": {
+        "x": -4.875,
+        "y": 0.375,
+        "z": 17.25
+      },
+      "size": {
+        "w": 0.75,
+        "h": 0.75,
+        "d": 0.75
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_57",
+      "label": "",
+      "presetName": "Main",
+      "position": {
+        "x": -4.125,
+        "y": 0.375,
+        "z": 17.25
+      },
+      "size": {
+        "w": 0.75,
+        "h": 0.75,
+        "d": 0.75
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_58",
+      "label": "",
+      "presetName": "Main",
+      "position": {
+        "x": -3.375,
+        "y": 0.375,
+        "z": 17.25
+      },
+      "size": {
+        "w": 0.75,
+        "h": 0.75,
+        "d": 0.75
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_59",
+      "label": "",
+      "presetName": "Main",
+      "position": {
+        "x": -2.75,
+        "y": 0.375,
+        "z": 17.25
+      },
+      "size": {
+        "w": 0.75,
+        "h": 0.75,
+        "d": 0.75
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_60",
+      "label": "",
+      "presetName": "Main",
+      "position": {
+        "x": -2,
+        "y": 0.375,
+        "z": 17.25
+      },
+      "size": {
+        "w": 0.75,
+        "h": 0.75,
+        "d": 0.75
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_61",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -9.5,
+        "y": 0.3125,
+        "z": 14.125
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_62",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -8.875,
+        "y": 0.3125,
+        "z": 14.125
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_63",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -8.25,
+        "y": 0.3125,
+        "z": 14.125
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_64",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -7.625,
+        "y": 0.3125,
+        "z": 14.125
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_65",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -7,
+        "y": 0.3125,
+        "z": 14.125
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_66",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -6.375,
+        "y": 0.3125,
+        "z": 14.125
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_67",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -5.75,
+        "y": 0.3125,
+        "z": 14.125
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_68",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -5.125,
+        "y": 0.3125,
+        "z": 14.125
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_69",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -4.5,
+        "y": 0.3125,
+        "z": 14.125
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_70",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -3.875,
+        "y": 0.3125,
+        "z": 14.125
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_71",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -3.25,
+        "y": 0.3125,
+        "z": 14.125
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_72",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -2.625,
+        "y": 0.3125,
+        "z": 14.125
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_73",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -2,
+        "y": 0.3125,
+        "z": 14.125
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_74",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -1.375,
+        "y": 0.3125,
+        "z": 14.125
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_75",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -9.5,
+        "y": 0.3125,
+        "z": 12.625
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_76",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -9.5,
+        "y": 0.3125,
+        "z": 12.125
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_77",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -8.875,
+        "y": 0.3125,
+        "z": 12.625
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_78",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -8.875,
+        "y": 0.3125,
+        "z": 12.125
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_79",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -8.25,
+        "y": 0.3125,
+        "z": 12.625
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_80",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -8.25,
+        "y": 0.3125,
+        "z": 12.125
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_81",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -7.625,
+        "y": 0.3125,
+        "z": 12.625
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_82",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -7.625,
+        "y": 0.3125,
+        "z": 12.125
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_83",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -7,
+        "y": 0.3125,
+        "z": 12.625
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_84",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -7,
+        "y": 0.3125,
+        "z": 12.125
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_85",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -6.375,
+        "y": 0.3125,
+        "z": 12.625
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_86",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -6.375,
+        "y": 0.3125,
+        "z": 12.125
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_87",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -5.75,
+        "y": 0.3125,
+        "z": 12.625
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_88",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -5.75,
+        "y": 0.3125,
+        "z": 12.125
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_89",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -5.125,
+        "y": 0.3125,
+        "z": 12.625
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_90",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -5.125,
+        "y": 0.3125,
+        "z": 12.125
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_91",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -4.5,
+        "y": 0.3125,
+        "z": 12.625
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_92",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -4.5,
+        "y": 0.3125,
+        "z": 12.125
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_93",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -3.875,
+        "y": 0.3125,
+        "z": 12.625
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_94",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -3.875,
+        "y": 0.3125,
+        "z": 12.125
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_95",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -3.25,
+        "y": 0.3125,
+        "z": 12.625
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_97",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -3.25,
+        "y": 0.3125,
+        "z": 12.125
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_98",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -2.625,
+        "y": 0.3125,
+        "z": 12.625
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_99",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -2,
+        "y": 0.3125,
+        "z": 12.625
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_100",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -1.375,
+        "y": 0.3125,
+        "z": 12.625
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_101",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -2.625,
+        "y": 0.3125,
+        "z": 12.125
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_102",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -2,
+        "y": 0.3125,
+        "z": 12.125
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_103",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -1.375,
+        "y": 0.3125,
+        "z": 12.125
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_104",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -1.25,
+        "y": 0.3125,
+        "z": 10.625
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_105",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -1.875,
+        "y": 0.3125,
+        "z": 10.625
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_106",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -2.5,
+        "y": 0.3125,
+        "z": 10.625
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_107",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -3.125,
+        "y": 0.3125,
+        "z": 10.625
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_108",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -3.75,
+        "y": 0.3125,
+        "z": 10.625
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_109",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -4.375,
+        "y": 0.3125,
+        "z": 10.625
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_110",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -5,
+        "y": 0.3125,
+        "z": 10.625
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_111",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -5.625,
+        "y": 0.3125,
+        "z": 10.625
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_112",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -6.25,
+        "y": 0.3125,
+        "z": 10.625
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_113",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -6.875,
+        "y": 0.3125,
+        "z": 10.625
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_114",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -7.5,
+        "y": 0.3125,
+        "z": 10.625
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_115",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -8.125,
+        "y": 0.3125,
+        "z": 10.625
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_116",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -8.125,
+        "y": 0.3125,
+        "z": 10.125
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_117",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -7.5,
+        "y": 0.3125,
+        "z": 10.125
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_118",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -6.875,
+        "y": 0.3125,
+        "z": 10.125
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_119",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -6.25,
+        "y": 0.3125,
+        "z": 10.125
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_120",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -5.625,
+        "y": 0.3125,
+        "z": 10.125
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_121",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -5,
+        "y": 0.3125,
+        "z": 10.125
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_122",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -4.375,
+        "y": 0.3125,
+        "z": 10.125
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_123",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -3.75,
+        "y": 0.3125,
+        "z": 10.125
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_124",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -3.125,
+        "y": 0.3125,
+        "z": 10.125
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_125",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -2.5,
+        "y": 0.3125,
+        "z": 10.125
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_126",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -1.875,
+        "y": 0.3125,
+        "z": 10.125
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_127",
+      "label": "",
+      "presetName": "Misc",
+      "position": {
+        "x": -1.25,
+        "y": 0.3125,
+        "z": 10.125
+      },
+      "size": {
+        "w": 0.625,
+        "h": 0.625,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_155",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -1.125,
+        "y": 0.1875,
+        "z": 8.125
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_163",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -1.625,
+        "y": 0.1875,
+        "z": 8.125
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_164",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -2.125,
+        "y": 0.1875,
+        "z": 8.125
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_165",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -2.625,
+        "y": 0.1875,
+        "z": 8.125
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_166",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -3.125,
+        "y": 0.1875,
+        "z": 8.125
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_167",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -3.625,
+        "y": 0.1875,
+        "z": 8.125
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_168",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -4.125,
+        "y": 0.1875,
+        "z": 8.125
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_169",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -4.625,
+        "y": 0.1875,
+        "z": 8.125
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_170",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -5.125,
+        "y": 0.1875,
+        "z": 8.125
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_171",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -5.625,
+        "y": 0.1875,
+        "z": 8.125
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_172",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -6.125,
+        "y": 0.1875,
+        "z": 8.125
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_173",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -6.625,
+        "y": 0.1875,
+        "z": 8.125
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_174",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -7.125,
+        "y": 0.1875,
+        "z": 8.125
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_175",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -7.625,
+        "y": 0.1875,
+        "z": 8.125
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_176",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -8.125,
+        "y": 0.1875,
+        "z": 8.125
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_177",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -8.625,
+        "y": 0.1875,
+        "z": 8.125
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_178",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -9.125,
+        "y": 0.1875,
+        "z": 8.125
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_179",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -9.625,
+        "y": 0.1875,
+        "z": 8.125
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_180",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -10.125,
+        "y": 0.1875,
+        "z": 8.125
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_181",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -10.625,
+        "y": 0.1875,
+        "z": 8.125
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_182",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -11.125,
+        "y": 0.1875,
+        "z": 8.125
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_183",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -11.625,
+        "y": 0.1875,
+        "z": 8.125
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_184",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -12.125,
+        "y": 0.1875,
+        "z": 8.125
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_185",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -12.625,
+        "y": 0.1875,
+        "z": 8.125
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_186",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -13.125,
+        "y": 0.1875,
+        "z": 8.125
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_187",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -13.625,
+        "y": 0.1875,
+        "z": 8.125
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_188",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -14.125,
+        "y": 0.1875,
+        "z": 8.125
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_189",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -14.125,
+        "y": 0.1875,
+        "z": 8.625
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_190",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -13.625,
+        "y": 0.1875,
+        "z": 8.625
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_191",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -13.125,
+        "y": 0.1875,
+        "z": 8.625
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_192",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -12.625,
+        "y": 0.1875,
+        "z": 8.625
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_193",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -12.125,
+        "y": 0.1875,
+        "z": 8.625
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_194",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -11.625,
+        "y": 0.1875,
+        "z": 8.625
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_195",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -11.125,
+        "y": 0.1875,
+        "z": 8.625
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_196",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -10.625,
+        "y": 0.1875,
+        "z": 8.625
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_197",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -10.125,
+        "y": 0.1875,
+        "z": 8.625
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_198",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -9.625,
+        "y": 0.1875,
+        "z": 8.625
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_199",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -9.125,
+        "y": 0.1875,
+        "z": 8.625
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_200",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -8.625,
+        "y": 0.1875,
+        "z": 8.625
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_201",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -8.125,
+        "y": 0.1875,
+        "z": 8.625
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_202",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -7.625,
+        "y": 0.1875,
+        "z": 8.625
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_204",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -7.125,
+        "y": 0.1875,
+        "z": 8.625
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_205",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -6.625,
+        "y": 0.1875,
+        "z": 8.625
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_206",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -6.125,
+        "y": 0.1875,
+        "z": 8.625
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_207",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -5.625,
+        "y": 0.1875,
+        "z": 8.625
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_209",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -5.125,
+        "y": 0.1875,
+        "z": 8.625
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_210",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -4.625,
+        "y": 0.1875,
+        "z": 8.625
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_211",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -4.125,
+        "y": 0.1875,
+        "z": 8.625
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_212",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -3.625,
+        "y": 0.1875,
+        "z": 8.625
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_213",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -3.125,
+        "y": 0.1875,
+        "z": 8.625
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_214",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -2.625,
+        "y": 0.1875,
+        "z": 8.625
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_215",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -2.125,
+        "y": 0.1875,
+        "z": 8.625
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_216",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -1.625,
+        "y": 0.1875,
+        "z": 8.625
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_217",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -1.125,
+        "y": 0.1875,
+        "z": 8.625
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    },
+    {
+      "id": "box_219",
+      "label": "",
+      "presetName": "FileCabinetWider",
+      "position": {
+        "x": -14.25,
+        "y": 0.1875,
+        "z": 0.75
+      },
+      "size": {
+        "w": 0.5,
+        "h": 0.375,
+        "d": 0.5
+      },
+      "capacity": "Unset"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Standard",
+      "w": 1,
+      "h": 1,
+      "d": 1
+    },
+    {
+      "name": "Half-Height",
+      "w": 1,
+      "h": 0.5,
+      "d": 1
+    },
+    {
+      "name": "Slim",
+      "w": 0.5,
+      "h": 1,
+      "d": 1
+    },
+    {
+      "name": "Main",
+      "w": 0.75,
+      "h": 0.75,
+      "d": 0.75
+    },
+    {
+      "name": "Large-Wide",
+      "w": 0.875,
+      "h": 0.75,
+      "d": 0.75
+    },
+    {
+      "name": "Misc",
+      "w": 0.5,
+      "h": 0.625,
+      "d": 0.625
+    },
+    {
+      "name": "Misc",
+      "w": 0.625,
+      "h": 0.625,
+      "d": 0.5
+    },
+    {
+      "name": "FileCabinet",
+      "w": 0.5,
+      "h": 0.25,
+      "d": 0.25
+    },
+    {
+      "name": "FileCabinet",
+      "w": 0.375,
+      "h": 0.375,
+      "d": 0.5
+    },
+    {
+      "name": "FileCabinetWider",
+      "w": 0.5,
+      "h": 0.375,
+      "d": 0.5
+    }
+  ]
+}
