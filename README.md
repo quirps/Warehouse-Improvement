@@ -1,5 +1,5 @@
-### Warehouse PutAway Improvement 
-Swedemom's warehouse contains thousands of items contained in hundrends of **storage slots**, most of which are at max capacity. Currently storage slots (bins that store items labelled with a 2 character alpha-numerical id) don't contain any capacity nor spatial information, which makes putting items into storage tedious. A further complication is certain items have implicit storage types, as they either compact well when placed in the same bins or binned for other reasons (breakables, big, small items), yet this information doesn't exist or is not yet integrated. 
+# Warehouse Improvement - Put Away
+Swedemom's warehouse contains thousands of items contained in hundrends of **storage slots**, most of which are at max capacity. Currently storage slots (bins that store items labelled with a 2 character alpha-numerical id) don't contain any capacity nor spatial information, which makes putting items into storage tedious. A further constraint is certain items have implicit storage types, as they either compact well when placed in the same bins or for other reasons (breakables, big, small items), yet this information doesn't exist or is not yet integrated. 
 
 Currently a user performing the Put Away task must do the following:
 
@@ -7,26 +7,28 @@ Currently a user performing the Put Away task must do the following:
 * If no type, find any miscellanous bin that is empty
 * If a type, find a bin of that type, if there's no space look for another bin of that type until you eventually can insert the item and store it. 
 
-The main issue is this process of finding a storage slot with the given type constrained to the fact a large majority of storage slots are at max capacity, can lead to an large inefficiences.
+*The primary issue is the process of finding a storage slot with the given storage type subject to the large majority of storage slots being at max capacity, leads to signficant inefficiences.*
 
 **This proposal is meant to alleviate the latter problems** 
 
-### Overview 
+## Overview 
 
 We propose a multifacted solution that intends to upgrade the current overall storage experience as well as increase the effciency in the put away task. 
 
-We first introduce the warehouse builder, an 3D isometric block builder that captures the geometry of the warehouse as well as type and capacity information (https://quirps.github.io/Warehouse-Improvement/)[WarehouseBuilder]. 
+We first introduce the warehouse builder, a 3D isometric block builder that captures the geometry of the warehouse as well as type and capacity information (https://quirps.github.io/Warehouse-Improvement/)[WarehouseBuilder]. 
 
 There are **two main features** to see here, which can be referenced in the WarehouseBuilder Demo App linked previously:
-* The builder, which can be seen in the Builder tab, the top center of the screen. This enables the user to create warehouses and get a rough geometric mapping, giving users a familiar map to know precisely where to go in order to interact with a given storage slot. 
-* The usability, how this will be used in practice. The primary motivation for this is to aid the put away task, hence when an item is now scanned for put away (Manage Inventory in the swedemom app), there will now be a warehouse map greys out all storage slots that aren't compatible with the item type (either due to being full or type discrepancy) and in turn show color-coded capacity statuses on all available storage slots. 
+* The builder, which can be seen in the Builder tab, the top center of the screen. This enables the user to create warehouses and get a rough geometric mapping of storage slots, enabling users to be more efficiently direct themselves accordingly. 
+* The usability, how this will be used in practice. The primary motivation for this is to aid the *put away* task, hence when an item is now scanned for put away (Manage Inventory in the swedemom app), there will now be a warehouse map that greys out all storage slots that aren't compatible with the item (either due to being full or type discrepancy) and in turn display color-coded capacity statuses on all available storage slots. 
 
-There is still work to be done to implement this. 
+## Implementation To-Dos
 
 ### How are we managing the dynamic capacitiy state on storage slots?
-As of now we're planning on 3 capacity states: Full, Nearly Full, Plenty, as most storage slots have very little room. This would likely be a manual 
+As of now we're planning on 3 capacity states: Full, Nearly Full, Plenty, as most storage slots have very little room. Also we'd likely have a float between 0 and 1 inclusive to track capacity as we may have automated methods to assist with this in the future. 
 
-Also a fixed  
+Currently we anticipate a user manually selecting the capacity status if an item change is made at a given storage slot. 
+
+There is likely some room for automated assistance. For example when pulling an item from a full storage slot, automatically bumping it down to Nearly Full. 
 
 ### Identifying storage types of items
 Currently at the time of writing this, the precision of how item types are stored is unknown, so the difficulty in mapping these types to storage types is also unknown. On the plus side, this is a helper type addition rather than an authorative, meaning it's augmenting the user in a way to complete a task more efficiently instead of depending on this tool to get a task done properly. 
@@ -95,6 +97,8 @@ We would like to forecast the future efficiences we can knock out with minimal c
 
 #### Finer storage position information 
 Even now we have multiple boxes in a given storage slot, which naturally leads to a more precise id convention (triple JA0 instead of a double alphanumeric). 
+
+For compact media, periodic, thin dividers with a 2 digit alphanumeric id could be used to divide the box. These 2 digit intra-box ids would then be concatenated with 
 
 A more precise, affordable solution would be to try and get intra-box proximity spatial information. The rough idea would be to have bar codes lining the upper perimeter of the storage boxes, these bar codes are **intra-box geometric location tags**. 
 
