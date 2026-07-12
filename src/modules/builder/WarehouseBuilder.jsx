@@ -428,6 +428,7 @@ function BoxTypePreview({ newSize }) {
 
 function NewTypeDialog({ baseSize, onAdd, onCancel }) {
   const [name, setName] = useState("");
+  const [isLandmark, setIsLandmark] = useState(false);
   const [size, setSize] = useState({
     w: clampDim(baseSize.w),
     h: clampDim(baseSize.h),
@@ -449,7 +450,7 @@ function NewTypeDialog({ baseSize, onAdd, onCancel }) {
       setNameErr(true);
       return;
     }
-    onAdd({ name: name.trim(), w: size.w, h: size.h, d: size.d });
+    onAdd({ name: name.trim(), w: size.w, h: size.h, d: size.d, isLandmark });
   };
 
   const DimRow = ({ axis }) => {
@@ -704,6 +705,10 @@ function NewTypeDialog({ baseSize, onAdd, onCancel }) {
             </div>
           )}
         </div>
+        <div style={{ display: "flex", alignItems: 'center', gap: 8, marginTop: 4 }}>
+          <input type="checkbox" checked={isLandmark} onChange={(e) => setIsLandmark(e.target.checked)} />
+          <label style={{ color: C.text, fontSize: 12 }}>Is Landmark (no functionality)</label>
+        </div>
         <div style={{ display: "flex", gap: 8 }}>
           <button
             style={{
@@ -787,7 +792,7 @@ function EditDialog({ box, labelDraft, setLabelDraft, onConfirm, onCancel }) {
           <input
             autoFocus
             value={labelDraft}
-            maxLength={8}
+            maxLength={24}
             placeholder="A1, DK, 8D…"
             onChange={(e) => setLabelDraft(e.target.value.toUpperCase())}
             onKeyDown={(e) => {
@@ -1091,6 +1096,17 @@ export default function WarehouseBuilder({
 
   const status = useCallback((m) => setStatusMsg(m), []);
 
+  const selectBoxesByType = (presetName) => {
+    const ids = new Set();
+    boxes.forEach((b) => {
+      if (b.presetName === presetName) {
+        ids.add(b.id);
+      }
+    });
+    setSelectedIds(ids);
+    status(`Selected ${ids.size} boxes of type "${presetName}"`);
+  };
+
   const commitBoxes = useCallback((next, prev) => {
     historyRef.current = [...historyRef.current.slice(-MAX_HISTORY + 1), prev];
     futureRef.current = [];
@@ -1215,6 +1231,40 @@ export default function WarehouseBuilder({
     const map = meshMapRef.current;
 
     const displayIds = new Set(displayBoxes.map((b) => b.id));
+    
+    // Identify contiguous landmark clusters
+    const contiguousLandmarkIds = new Set();
+    const clusterCenters = new Map();
+    const clusterPrimaryBox = new Map(); // Store ID of primary box in cluster
+
+    displayBoxes.filter(b => b.isLandmark).forEach(b => {
+      if (!contiguousLandmarkIds.has(b.id)) {
+        const cluster = findContiguousBoxes(b.id, displayBoxes);
+        let hasLandmark = false;
+        let sumX = 0, sumZ = 0, count = 0;
+        let minId = null;
+        
+        cluster.forEach(id => {
+          const box = displayBoxes.find(b => b.id === id);
+          if (box?.isLandmark) {
+            hasLandmark = true;
+            sumX += box.position.x;
+            sumZ += box.position.z;
+            count++;
+            if (minId === null || id < minId) minId = id;
+          }
+        });
+
+        if (hasLandmark) {
+          const center = { x: sumX / count, z: sumZ / count };
+          cluster.forEach(id => {
+            contiguousLandmarkIds.add(id);
+            clusterCenters.set(id, center);
+            clusterPrimaryBox.set(id, minId);
+          });
+        }
+      }
+    });
 
     for (const [id, { group }] of map.entries()) {
       if (!displayIds.has(id)) {
@@ -1240,9 +1290,13 @@ export default function WarehouseBuilder({
           disposeGroup(existing.group);
         }
 
+        const isPrimary = box.isLandmark && clusterPrimaryBox.get(box.id) === box.id;
+
         const group = buildBoxMesh(box, {
           selected: isSelected,
           hoveredDelete: isHoveredDelete,
+          isContiguous: box.isLandmark && contiguousLandmarkIds.has(box.id),
+          clusterCenter: isPrimary ? clusterCenters.get(box.id) : null
         });
         scene.add(group);
         map.set(box.id, {
@@ -1393,6 +1447,7 @@ export default function WarehouseBuilder({
           id: newId(),
           label: "",
           presetName: p.name,
+          isLandmark: p.isLandmark,
           position: { x: pos.x, y, z: pos.z },
           size: { w: p.w, h: p.h, d: p.d },
           capacity: "Unset",
@@ -1674,9 +1729,19 @@ export default function WarehouseBuilder({
       const eid = editRef.current?.id;
       if (!eid) return;
       const prev = bRef.current;
+      const boxToEdit = prev.find((b) => b.id === eid);
+      if (!boxToEdit) return;
+
+      let affectedIds = new Set([eid]);
+      if (boxToEdit.isLandmark) {
+        affectedIds = findContiguousBoxes(eid, prev);
+      }
+
       commitBoxes(
         prev.map((b) =>
-          b.id === eid ? { ...b, label: newLabel, capacity: newCap } : b,
+          affectedIds.has(b.id)
+            ? { ...b, label: newLabel, capacity: b.isLandmark ? newCap : b.capacity }
+            : b
         ),
         prev,
       );
@@ -1692,6 +1757,48 @@ export default function WarehouseBuilder({
     setActiveSzIdx(next.length - 1);
     setShowNewType(false);
     status(`Box type "${preset.name}" added`);
+  };
+
+  const deletePreset = (preset) => {
+    const inUse = boxes.some((b) => b.presetName === preset.name);
+    if (inUse) {
+      const confirm = prompt(
+        `"${preset.name}" is in use. Type "REMOVE" to confirm deletion of all boxes of this type.`,
+      );
+      if (confirm !== "REMOVE") {
+        status("Deletion cancelled");
+        return;
+      }
+      // Remove boxes and the preset
+      const prev = bRef.current;
+      commitBoxes(
+        prev.filter((b) => b.presetName !== preset.name),
+        prev,
+      );
+    }
+    const next = presRef.current.filter((p) => p.name !== preset.name);
+    setPresets(next);
+    if (activeSzIdx >= next.length) setActiveSzIdx(Math.max(0, next.length - 1));
+    status(`Box type "${preset.name}" removed`);
+  };
+
+  const editPreset = (preset) => {
+    const newName = prompt(`Enter new name for "${preset.name}":`, preset.name);
+    if (!newName || newName === preset.name) return;
+
+    // Rename preset
+    const nextPresets = presets.map((p) =>
+      p.name === preset.name ? { ...p, name: newName } : p,
+    );
+    setPresets(nextPresets);
+
+    // Also update all boxes that used the old preset name
+    const nextBoxes = boxes.map((b) =>
+      b.presetName === preset.name ? { ...b, presetName: newName } : b,
+    );
+    commitBoxes(nextBoxes, bRef.current);
+
+    status(`Renamed "${preset.name}" to "${newName}"`);
   };
 
   const selectedBox = boxes.find((b) => selectedIds.has(b.id));
@@ -1806,26 +1913,25 @@ export default function WarehouseBuilder({
           ))}
         </div>
         <div style={sec}>
-          <span style={slabel}>Box Type</span>
-          <div style={{ marginBottom: 6, fontSize: 9, color: "#2a5070" }}>
-            1 atom = {ATOM}u · default = {DEFAULT_W / ATOM}×{DEFAULT_H / ATOM}×
-            {DEFAULT_D / ATOM} atoms
-          </div>
+          <span style={slabel}>Box Types</span>
           {presets.map((p, i) => (
-            <button
-              key={i}
-              style={pbtn(activeSzIdx === i)}
-              onClick={() => setActiveSzIdx(i)}
-            >
-              <span>{p.name}</span>
-              <span style={{ display: "flex", gap: 4, alignItems: "center" }}>
-                <span style={{ color: AXIS_COLORS.w, fontSize: 9 }}>{p.w}</span>
-                <span style={{ color: "#1a3050" }}>×</span>
-                <span style={{ color: AXIS_COLORS.h, fontSize: 9 }}>{p.h}</span>
-                <span style={{ color: "#1a3050" }}>×</span>
-                <span style={{ color: AXIS_COLORS.d, fontSize: 9 }}>{p.d}</span>
-              </span>
-            </button>
+            <div key={i} style={{ marginBottom: 4 }}>
+              <button
+                style={pbtn(activeSzIdx === i)}
+                onClick={() => {
+                  setActiveSzIdx(i);
+                  selectBoxesByType(p.name);
+                }}
+              >
+                {p.name}
+              </button>
+              {activeSzIdx === i && (
+                <div style={{ display: "flex", gap: 6, paddingLeft: 12, marginTop: 4, marginBottom: 8 }}>
+                  <button onClick={() => editPreset(p)} style={{ ...abtn, fontSize: 10, padding: "4px 8px" }}>✎ Edit</button>
+                  <button onClick={() => deletePreset(p)} style={{ ...dbtn, fontSize: 10, padding: "4px 8px" }}>⊟ Delete</button>
+                </div>
+              )}
+            </div>
           ))}
           <button
             onClick={() => setShowNewType(true)}
@@ -1861,38 +1967,6 @@ export default function WarehouseBuilder({
           }}
         />
         <div style={sec}>
-          <span style={slabel}>Capacity</span>
-          {CAPACITIES.map((c) => (
-            <div
-              key={c}
-              style={{ display: "flex", alignItems: "center", marginBottom: 6 }}
-            >
-              {capDot(c)}
-              <span style={{ color: CAPACITY_COLORS[c].label, fontSize: 12 }}>
-                {c}
-              </span>
-            </div>
-          ))}
-        </div>
-        <div style={sec}>
-          <span style={slabel}>Preview</span>
-          <button
-            style={{
-              ...abtn,
-              background: demoMode ? "#0e3a20" : "#091828",
-              color: demoMode ? C.green : C.textDim,
-              border: `1px solid ${demoMode ? "#1a6030" : C.border}`,
-              marginBottom: 0,
-            }}
-            onClick={() => {
-              setDemoMode((v) => !v);
-              status(demoMode ? "Demo off" : "Showing capacity colours");
-            }}
-          >
-            {demoMode ? "◉ Capacity ON" : "○ Preview capacities"}
-          </button>
-        </div>
-        <div style={sec}>
           <span style={slabel}>File</span>
           <button style={abtn} onClick={exportJSON}>
             ⬇ Export .wh.json
@@ -1913,33 +1987,6 @@ export default function WarehouseBuilder({
           >
             ⊗ Clear All
           </button>
-        </div>
-        <div style={{ padding: "10px 14px 16px", flexShrink: 0 }}>
-          <span style={{ ...slabel, marginBottom: 10 }}>Shortcuts</span>
-          {[
-            ["L-drag", "orbit"],
-            ["R-drag", "pan"],
-            ["scroll", "zoom"],
-            ["click box", "select"],
-            ["E / dbl-click", "edit box"],
-            ["Del", "delete"],
-            ["⌃Z / ⌃Y", "undo / redo"],
-            ["⌃C / ⌃V", "copy / paste"],
-            ["↑↓←→", "nudge view-relative"],
-          ].map(([k, v]) => (
-            <div
-              key={k}
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                marginBottom: 5,
-                alignItems: "center",
-              }}
-            >
-              <span style={kbd}>{k}</span>
-              <span style={{ color: C.textDim, fontSize: 10 }}>{v}</span>
-            </div>
-          ))}
         </div>
       </div>
       <div
