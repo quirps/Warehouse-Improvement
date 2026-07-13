@@ -4,6 +4,34 @@
 import * as THREE from "three";
 import { CAPACITY_COLORS, ITEM_TYPES } from "../../data/mockData.js";
 
+// Find all boxes contiguous to the start box (sharing a face)
+export function findContiguousBoxes(startId, boxes) {
+  const result = new Set([startId]);
+  const queue = [startId];
+  
+  while (queue.length > 0) {
+    const currentId = queue.shift();
+    const currentBox = boxes.find(b => b.id === currentId);
+    if (!currentBox) continue;
+
+    for (const otherBox of boxes) {
+      if (result.has(otherBox.id)) continue;
+      
+      // Simple bounding box intersection (with small epsilon)
+      const touches = 
+        Math.abs(currentBox.position.x - otherBox.position.x) < (currentBox.size.w + otherBox.size.w) / 2 + 0.01 &&
+        Math.abs(currentBox.position.z - otherBox.position.z) < (currentBox.size.d + otherBox.size.d) / 2 + 0.01 &&
+        Math.abs(currentBox.position.y - otherBox.position.y) < (currentBox.size.h + otherBox.size.h) / 2 + 0.01;
+      
+      if (touches) {
+        result.add(otherBox.id);
+        queue.push(otherBox.id);
+      }
+    }
+  }
+  return result;
+}
+
 export const BG_COLOR = "#050810";
 export const GRID_SIZE = 60;
 
@@ -37,21 +65,23 @@ export function makeLabelTexture(label, capBorder, renderer = null) {
 
   // Label — system UI font, large, pure white, no blur at all
   const text = (label || "·").toUpperCase();
+  // Limit to 24 characters to ensure it fits and remains readable
+  const displayLabel = text.length > 24 ? text.substring(0, 24) : text;
   c.fillStyle = "#ffffff";
   // Scale font size to fit — shorter labels get bigger text
-  const basePx = text.length <= 2 ? 320 : text.length <= 4 ? 240 : 180;
+  const basePx = displayLabel.length <= 2 ? 320 : displayLabel.length <= 6 ? 240 : 160;
   c.font = `900 ${basePx}px -apple-system, "Segoe UI", Arial, sans-serif`;
   c.textAlign = "center";
   c.textBaseline = "middle";
 
   // Measure and shrink if needed
   let fontSize = basePx;
-  while (c.measureText(text).width > W - 80 && fontSize > 60) {
+  while (c.measureText(displayLabel).width > W - 80 && fontSize > 60) {
     fontSize -= 10;
     c.font = `900 ${fontSize}px -apple-system, "Segoe UI", Arial, sans-serif`;
   }
 
-  c.fillText(text, W / 2, H / 2 - 10);
+  c.fillText(displayLabel, W / 2, H / 2 - 10);
 
   // Bottom accent bar in the capacity/type colour
   c.fillStyle = capBorder;
@@ -66,17 +96,30 @@ export function makeLabelTexture(label, capBorder, renderer = null) {
 }
 
 // ─── Box mesh (builder mode — full interactive) ───────────────────────────────
+// Helper to create a billboarded text label
+export function createBillboardLabel(text, color) {
+  const tex = makeLabelTexture(text, color);
+  const mat = new THREE.SpriteMaterial({ map: tex, transparent: true });
+  const sprite = new THREE.Sprite(mat);
+  sprite.scale.set(1.5, 0.75, 1); // Adjust size as needed
+  return sprite;
+}
+
 export function buildBoxMesh(box, flags = {}) {
-  const { selected = false, hoveredDelete = false, dimmed = false } = flags;
+  const { selected = false, hoveredDelete = false, dimmed = false, isContiguous = false, clusterCenter = null } = flags;
   const { w, h, d } = box.size;
+  const isLandmark = !!box.isLandmark;
+  
   const cap = CAPACITY_COLORS[box.capacity] || CAPACITY_COLORS.Unset;
   const group = new THREE.Group();
   group.userData = { boxId: box.id };
 
-  const bodyColor = hoveredDelete ? "#2a0a0a" : "#0c1d30";
-  const emissive = hoveredDelete ? "#ff0000" : cap.border;
+  const bodyColor = hoveredDelete ? "#2a0a0a" : isLandmark ? "#0c1a20" : "#0c1d30";
+  const emissive = hoveredDelete ? "#ff0000" : isLandmark ? "#204060" : cap.border;
   const emissiveI = hoveredDelete
     ? 0.6
+    : isLandmark
+    ? 0.2
     : selected
       ? 0.28
       : dimmed
@@ -84,11 +127,17 @@ export function buildBoxMesh(box, flags = {}) {
         : 0.07;
   const bodyOpacity = dimmed ? 0.25 : 1;
 
-  const geo = new THREE.BoxGeometry(w - 0.045, h - 0.045, d - 0.045);
+  // Use full size for landmarks to avoid gaps
+  const geo = new THREE.BoxGeometry(
+    w - (isLandmark ? 0 : 0.045), 
+    h - (isLandmark ? 0 : 0.045), 
+    d - (isLandmark ? 0 : 0.045)
+  );
+  
   const mat = new THREE.MeshStandardMaterial({
     color: new THREE.Color(bodyColor),
-    metalness: 0.5,
-    roughness: 0.5,
+    metalness: isLandmark ? 0.2 : 0.5,
+    roughness: isLandmark ? 0.8 : 0.5,
     emissive: new THREE.Color(emissive),
     emissiveIntensity: emissiveI,
     transparent: dimmed,
@@ -99,7 +148,7 @@ export function buildBoxMesh(box, flags = {}) {
   mesh.receiveShadow = true;
   group.add(mesh);
 
-  const edgeColor = hoveredDelete ? "#ff2244" : cap.border;
+  const edgeColor = hoveredDelete ? "#ff2244" : isLandmark ? "#4080c0" : cap.border;
   const edgeOpacity = dimmed
     ? 0.1
     : hoveredDelete
@@ -108,7 +157,11 @@ export function buildBoxMesh(box, flags = {}) {
         ? 0.95
         : 0.5;
   const edgeGeo = new THREE.EdgesGeometry(
-    new THREE.BoxGeometry(w - 0.02, h - 0.02, d - 0.02),
+    new THREE.BoxGeometry(
+      w - (isLandmark ? 0 : 0.02), 
+      h - (isLandmark ? 0 : 0.02), 
+      d - (isLandmark ? 0 : 0.02)
+    )
   );
   group.add(
     new THREE.LineSegments(
@@ -151,27 +204,40 @@ export function buildBoxMesh(box, flags = {}) {
       ),
     );
   }
+  
   if (!dimmed) {
-    const tex = makeLabelTexture(box.label, cap.border);
-    const lMat = new THREE.MeshBasicMaterial({
-      map: tex,
-      transparent: true,
-      depthWrite: false,
-    });
-    const addFace = (pos, ry) => {
-      const fw = ry === 0 || ry === Math.PI ? w * 0.82 : d * 0.82;
-      const pm = new THREE.Mesh(
-        new THREE.PlaneGeometry(fw, h * 0.72),
-        lMat.clone(),
+    if (isLandmark && isContiguous && clusterCenter) {
+      // Add billboard label to the group, positioned at cluster center
+      const label = createBillboardLabel(box.label, cap.border);
+      // Position relative to group
+      label.position.set(
+        clusterCenter.x - box.position.x,
+        h/2 + 1.0, 
+        clusterCenter.z - box.position.z
       );
-      pm.position.copy(pos);
-      pm.rotation.y = ry;
-      group.add(pm);
-    };
-    addFace(new THREE.Vector3(0, 0, d / 2 + 0.001), 0);
-    addFace(new THREE.Vector3(0, 0, -d / 2 - 0.001), Math.PI);
-    addFace(new THREE.Vector3(w / 2 + 0.001, 0, 0), Math.PI / 2);
-    addFace(new THREE.Vector3(-w / 2 - 0.001, 0, 0), -Math.PI / 2);
+      group.add(label);
+    } else if (!isLandmark) {
+      const tex = makeLabelTexture(box.label, cap.border);
+      const lMat = new THREE.MeshBasicMaterial({
+        map: tex,
+        transparent: true,
+        depthWrite: false,
+      });
+      const addFace = (pos, ry) => {
+        const fw = ry === 0 || ry === Math.PI ? w * 0.82 : d * 0.82;
+        const pm = new THREE.Mesh(
+          new THREE.PlaneGeometry(fw, h * 0.72),
+          lMat.clone(),
+        );
+        pm.position.copy(pos);
+        pm.rotation.y = ry;
+        group.add(pm);
+      };
+      addFace(new THREE.Vector3(0, 0, d / 2 + 0.001), 0);
+      addFace(new THREE.Vector3(0, 0, -d / 2 - 0.001), Math.PI);
+      addFace(new THREE.Vector3(w / 2 + 0.001, 0, 0), Math.PI / 2);
+      addFace(new THREE.Vector3(-w / 2 - 0.001, 0, 0), -Math.PI / 2);
+    }
   }
 
   group.position.set(box.position.x, box.position.y, box.position.z);
@@ -187,6 +253,7 @@ export function buildViewerBoxMesh(box, flags = {}) {
     dimmed = false,
     highlighted = false,
     overrideEdgeColor = null,
+    colorMode = 'capacity', // 'capacity' | 'item'
   } = flags;
   const { w, h, d } = box.size;
   const cap = CAPACITY_COLORS[box.capacity] || CAPACITY_COLORS.Unset;
@@ -197,11 +264,17 @@ export function buildViewerBoxMesh(box, flags = {}) {
     boxId: box.id,
     boxLabel: box.label,
     itemType: box.itemType,
+    ...flags,
   };
 
-  const bodyHex = dimmed ? "#090f1a" : highlighted ? "#0e2040" : "#0c1d30";
+  const isLandmark = !!box.isLandmark;
+  const bodyHex = isLandmark ? "#2a3a4a" : (dimmed ? "#090f1a" : highlighted ? "#0e2040" : "#0c1d30");
+  
+  // Decide base color based on mode
+  const modeColor = isLandmark ? "#2a3a4a" : (colorMode === 'item' ? typeColor : cap.border);
+  
   const emissiveHex =
-    overrideEdgeColor || (highlighted ? typeColor : cap.border);
+    overrideEdgeColor || (highlighted ? modeColor : modeColor); // Simplified for now based on mode
   const emissiveInt = dimmed
     ? 0.01
     : highlighted
@@ -217,81 +290,151 @@ export function buildViewerBoxMesh(box, flags = {}) {
     roughness: 0.6,
     emissive: new THREE.Color(emissiveHex),
     emissiveIntensity: emissiveInt,
-    transparent: dimmed,
-    opacity: dimmed ? 0.18 : 1,
+    transparent: dimmed && !isLandmark,
+    opacity: (dimmed && !isLandmark) ? 0.18 : 1,
   });
-  group.add(
-    Object.assign(new THREE.Mesh(geo, mat), {
-      castShadow: true,
-      receiveShadow: true,
-    }),
-  );
+  const body = new THREE.Mesh(geo, mat);
+  body.name = 'body';
+  body.castShadow = true;
+  body.receiveShadow = true;
+  group.add(body);
 
   const edgeCol = selected
     ? "#ffffff"
     : overrideEdgeColor
       ? overrideEdgeColor
-      : highlighted
-        ? typeColor
-        : cap.border;
-  const edgeOp = dimmed ? 0.07 : selected ? 0.9 : highlighted ? 0.8 : 0.35;
+      : modeColor; // Use modeColor here
+  const edgeOp = dimmed && !isLandmark ? 0.07 : selected ? 0.9 : highlighted ? 0.8 : 0.35;
   const eg = new THREE.EdgesGeometry(
     new THREE.BoxGeometry(w - 0.02, h - 0.02, d - 0.02),
   );
-  group.add(
-    new THREE.LineSegments(
-      eg,
-      new THREE.LineBasicMaterial({
-        color: new THREE.Color(edgeCol),
-        transparent: true,
-        opacity: edgeOp,
-      }),
-    ),
+  const edges = new THREE.LineSegments(
+    eg,
+    new THREE.LineBasicMaterial({
+      color: new THREE.Color(edgeCol),
+      transparent: true,
+      opacity: edgeOp,
+    }),
   );
+  edges.name = 'edges';
+  group.add(edges);
 
   if (selected) {
     const rg = new THREE.EdgesGeometry(
       new THREE.BoxGeometry(w + 0.12, h + 0.12, d + 0.12),
     );
-    group.add(
-      new THREE.LineSegments(
-        rg,
-        new THREE.LineBasicMaterial({
-          color: 0x3b82f6,
-          transparent: true,
-          opacity: 0.9,
-        }),
-      ),
+    const selection = new THREE.LineSegments(
+      rg,
+      new THREE.LineBasicMaterial({
+        color: 0x3b82f6,
+        transparent: true,
+        opacity: 0.9,
+      }),
     );
+    selection.name = 'selection';
+    group.add(selection);
   }
 
-  if (!dimmed) {
-    const labelAccent =
-      overrideEdgeColor || (highlighted ? typeColor : cap.border);
-    const tex = makeLabelTexture(box.label, labelAccent);
-    const lMat = new THREE.MeshBasicMaterial({
-      map: tex,
-      transparent: true,
-      depthWrite: false,
-    });
-    const addFace = (pos, ry) => {
-      const fw = ry === 0 || ry === Math.PI ? w * 0.82 : d * 0.82;
-      const pm = new THREE.Mesh(
-        new THREE.PlaneGeometry(fw, h * 0.72),
-        lMat.clone(),
+  if (!dimmed || isLandmark) {
+    if (box.isLandmark && flags.isContiguous && flags.clusterCenter) {
+      const labelAccent = overrideEdgeColor || (highlighted ? typeColor : cap.border);
+      const label = createBillboardLabel(box.label, labelAccent);
+      label.position.set(
+        flags.clusterCenter.x - box.position.x,
+        h/2 + 1.0, 
+        flags.clusterCenter.z - box.position.z
       );
-      pm.position.copy(pos);
-      pm.rotation.y = ry;
-      group.add(pm);
-    };
-    addFace(new THREE.Vector3(0, 0, d / 2 + 0.001), 0);
-    addFace(new THREE.Vector3(0, 0, -d / 2 - 0.001), Math.PI);
-    addFace(new THREE.Vector3(w / 2 + 0.001, 0, 0), Math.PI / 2);
-    addFace(new THREE.Vector3(-w / 2 - 0.001, 0, 0), -Math.PI / 2);
+      group.add(label);
+    } else if (!box.isLandmark) {
+      const labelAccent =
+        overrideEdgeColor || (highlighted ? typeColor : cap.border);
+      const tex = makeLabelTexture(box.label, labelAccent);
+      const lMat = new THREE.MeshBasicMaterial({
+        map: tex,
+        transparent: true,
+        depthWrite: false,
+      });
+      const addFace = (pos, ry, i) => {
+        const fw = ry === 0 || ry === Math.PI ? w * 0.82 : d * 0.82;
+        const pm = new THREE.Mesh(
+          new THREE.PlaneGeometry(fw, h * 0.72),
+          lMat.clone(),
+        );
+        pm.position.copy(pos);
+        pm.rotation.y = ry;
+        pm.name = `label-face-${i}`;
+        group.add(pm);
+      };
+      addFace(new THREE.Vector3(0, 0, d / 2 + 0.001), 0, 0);
+      addFace(new THREE.Vector3(0, 0, -d / 2 - 0.001), Math.PI, 1);
+      addFace(new THREE.Vector3(w / 2 + 0.001, 0, 0), Math.PI / 2, 2);
+      addFace(new THREE.Vector3(-w / 2 - 0.001, 0, 0), -Math.PI / 2, 3);
+    }
   }
 
   group.position.set(box.position.x, box.position.y, box.position.z);
   return group;
+}
+
+export function updateViewerBoxMesh(group, box, flags) {
+  const {
+    selected = false,
+    dimmed = false,
+    highlighted = false,
+    overrideEdgeColor = null,
+    colorMode = 'capacity', // 'capacity' | 'item'
+  } = flags;
+
+  // Rebuild if dimmed or highlighted status changes to ensure labels are correct
+  if (group.userData.dimmed !== dimmed || group.userData.highlighted !== highlighted) return 'REBUILD';
+
+  const cap = CAPACITY_COLORS[box.capacity] || CAPACITY_COLORS.Unset;
+  const typeColor = ITEM_TYPES[box.itemType]?.color || "#2a5a8a";
+
+  const isLandmark = !!box.isLandmark;
+  const bodyHex = isLandmark ? "#2a3a4a" : (dimmed ? "#090f1a" : highlighted ? "#0e2040" : "#0c1d30");
+  const modeColor = isLandmark ? "#2a3a4a" : (colorMode === 'item' ? typeColor : cap.border);
+  const emissiveHex = overrideEdgeColor || modeColor;
+  const emissiveInt = dimmed ? 0.01 : highlighted ? 0.2 : selected ? 0.25 : 0.06;
+
+  // Update Body
+  const body = group.getObjectByName('body');
+  if (!body) return 'REBUILD';
+  body.material.color.set(bodyHex);
+  body.material.emissive.set(emissiveHex);
+  body.material.emissiveIntensity = emissiveInt;
+  body.material.transparent = dimmed && !isLandmark;
+  body.material.opacity = (dimmed && !isLandmark) ? 0.18 : 1;
+
+  // Update Edges
+  const edges = group.getObjectByName('edges');
+  if (!edges) return 'REBUILD';
+  const edgeCol = selected ? "#ffffff" : overrideEdgeColor || modeColor;
+  const edgeOp = (dimmed && !isLandmark) ? 0.07 : selected ? 0.9 : highlighted ? 0.8 : 0.35;
+  edges.material.color.set(edgeCol);
+  edges.material.opacity = edgeOp;
+
+  // Update/Handle Selection
+  let selection = group.getObjectByName('selection');
+  if (selected && !(dimmed && !isLandmark)) {
+    if (!selection) {
+      const { w, h, d } = box.size;
+      const rg = new THREE.EdgesGeometry(new THREE.BoxGeometry(w + 0.12, h + 0.12, d + 0.12));
+      selection = new THREE.LineSegments(rg, new THREE.LineBasicMaterial({
+        color: 0x3b82f6,
+        transparent: true,
+        opacity: 0.9,
+      }));
+      selection.name = 'selection';
+      group.add(selection);
+    }
+  } else if (selection) {
+    group.remove(selection);
+    selection.geometry.dispose();
+    selection.material.dispose();
+  }
+  
+  group.userData = { ...group.userData, ...flags };
 }
 
 // ─── Floor grid ───────────────────────────────────────────────────────────────

@@ -1,7 +1,7 @@
 // src/modules/inventory/ManageInventory.jsx
 import { useState, useEffect, useCallback } from "react";
 import { useInventory } from "../../hooks/useInventory.js";
-import WarehouseViewer from "./WarehouseViewer.jsx";
+// import WarehouseViewer from "./WarehouseViewer.jsx";
 import { ScannedItemCard } from "./ScannedItemCard.jsx";
 import warehouseData from "../../data/warehouse.wh.json";
 import {
@@ -1041,7 +1041,7 @@ export default function ManageInventory() {
         {/* Left: bin selector */}
         <BinSelector inv={inv} onLoadLayout={handleLoadLayout} />
 
-        {/* Center: 3D viewer */}
+        {/* Center: 3D viewer (Circular dependency placeholder) */}
         <div
           style={{
             flex: 1,
@@ -1054,13 +1054,14 @@ export default function ManageInventory() {
             minWidth: 0,
           }}
         >
-          <WarehouseViewer
+          <div>3D Viewer (Disabled to fix circular dependency)</div>
+          {/* <WarehouseViewer
             region={inv.region}
             dominantType={dominantType}
             selectedBinLabel={inv.selectedBin?.label ?? null}
             onSelectBin={handleViewerSelect}
             customLayout={viewerLayout}
-          />
+          /> */}
         </div>
 
         {/* Right: put away / other modes */}

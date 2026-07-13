@@ -4,7 +4,7 @@
     {
       "id": "box_1",
       "label": "",
-      "presetName": "SouthWall",
+      "presetName": "Main",
       "position": {
         "x": -9.75,
         "y": 0.375,
@@ -20,7 +20,7 @@
     {
       "id": "box_2",
       "label": "",
-      "presetName": "SouthWall",
+      "presetName": "Main",
       "position": {
         "x": -9,
         "y": 0.375,
@@ -36,7 +36,7 @@
     {
       "id": "box_3",
       "label": "",
-      "presetName": "SouthWall",
+      "presetName": "Main",
       "position": {
         "x": -8.25,
         "y": 0.375,
@@ -52,7 +52,7 @@
     {
       "id": "box_4",
       "label": "",
-      "presetName": "SouthWall",
+      "presetName": "Main",
       "position": {
         "x": -7.5,
         "y": 0.375,
@@ -68,7 +68,7 @@
     {
       "id": "box_5",
       "label": "",
-      "presetName": "SouthWall",
+      "presetName": "Main",
       "position": {
         "x": -6.75,
         "y": 0.375,
@@ -84,7 +84,7 @@
     {
       "id": "box_6",
       "label": "",
-      "presetName": "SouthWall",
+      "presetName": "Main",
       "position": {
         "x": -6,
         "y": 0.375,
@@ -100,7 +100,7 @@
     {
       "id": "box_7",
       "label": "",
-      "presetName": "SouthWall",
+      "presetName": "Main",
       "position": {
         "x": -5.25,
         "y": 0.375,
@@ -116,7 +116,7 @@
     {
       "id": "box_8",
       "label": "",
-      "presetName": "SouthWall",
+      "presetName": "Main",
       "position": {
         "x": -4.5,
         "y": 0.375,
@@ -132,7 +132,7 @@
     {
       "id": "box_9",
       "label": "",
-      "presetName": "SouthWall",
+      "presetName": "Main",
       "position": {
         "x": -3.75,
         "y": 0.375,
@@ -148,7 +148,7 @@
     {
       "id": "box_10",
       "label": "",
-      "presetName": "SouthWall",
+      "presetName": "Main",
       "position": {
         "x": -3,
         "y": 0.375,
@@ -164,7 +164,7 @@
     {
       "id": "box_11",
       "label": "",
-      "presetName": "SouthWall",
+      "presetName": "Main",
       "position": {
         "x": -2.25,
         "y": 0.375,
@@ -180,7 +180,7 @@
     {
       "id": "box_12",
       "label": "",
-      "presetName": "SouthWall",
+      "presetName": "Main",
       "position": {
         "x": -1.5,
         "y": 0.375,
@@ -612,7 +612,7 @@
     {
       "id": "box_47",
       "label": "",
-      "presetName": "SouthWall",
+      "presetName": "Main",
       "position": {
         "x": -11.5,
         "y": 0.375,
@@ -628,7 +628,7 @@
     {
       "id": "box_48",
       "label": "",
-      "presetName": "SouthWall",
+      "presetName": "Main",
       "position": {
         "x": -10.75,
         "y": 0.375,
@@ -644,7 +644,7 @@
     {
       "id": "box_49",
       "label": "",
-      "presetName": "SouthWall",
+      "presetName": "Main",
       "position": {
         "x": -10,
         "y": 0.375,
@@ -660,7 +660,7 @@
     {
       "id": "box_50",
       "label": "",
-      "presetName": "SouthWall",
+      "presetName": "Main",
       "position": {
         "x": -9.25,
         "y": 0.375,
@@ -676,7 +676,7 @@
     {
       "id": "box_51",
       "label": "",
-      "presetName": "SouthWall",
+      "presetName": "Main",
       "position": {
         "x": -8.5,
         "y": 0.375,
@@ -692,7 +692,7 @@
     {
       "id": "box_52",
       "label": "",
-      "presetName": "SouthWall",
+      "presetName": "Main",
       "position": {
         "x": -7.75,
         "y": 0.375,
@@ -708,7 +708,7 @@
     {
       "id": "box_53",
       "label": "",
-      "presetName": "SouthWall",
+      "presetName": "Main",
       "position": {
         "x": -7.125,
         "y": 0.375,
@@ -724,7 +724,7 @@
     {
       "id": "box_54",
       "label": "",
-      "presetName": "SouthWall",
+      "presetName": "Main",
       "position": {
         "x": -6.375,
         "y": 0.375,
@@ -740,7 +740,7 @@
     {
       "id": "box_55",
       "label": "",
-      "presetName": "SouthWall",
+      "presetName": "Main",
       "position": {
         "x": -5.625,
         "y": 0.375,
@@ -756,7 +756,7 @@
     {
       "id": "box_56",
       "label": "",
-      "presetName": "SouthWall",
+      "presetName": "Main",
       "position": {
         "x": -4.875,
         "y": 0.375,
@@ -772,7 +772,7 @@
     {
       "id": "box_57",
       "label": "",
-      "presetName": "SouthWall",
+      "presetName": "Main",
       "position": {
         "x": -4.125,
         "y": 0.375,
@@ -788,7 +788,7 @@
     {
       "id": "box_58",
       "label": "",
-      "presetName": "SouthWall",
+      "presetName": "Main",
       "position": {
         "x": -3.375,
         "y": 0.375,
@@ -804,7 +804,7 @@
     {
       "id": "box_59",
       "label": "",
-      "presetName": "SouthWall",
+      "presetName": "Main",
       "position": {
         "x": -2.75,
         "y": 0.375,
@@ -820,7 +820,7 @@
     {
       "id": "box_60",
       "label": "",
-      "presetName": "SouthWall",
+      "presetName": "Main",
       "position": {
         "x": -2,
         "y": 0.375,
@@ -1892,7 +1892,7 @@
     {
       "id": "box_155",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -1.125,
         "y": 0.1875,
@@ -1908,7 +1908,7 @@
     {
       "id": "box_163",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -1.625,
         "y": 0.1875,
@@ -1924,7 +1924,7 @@
     {
       "id": "box_164",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -2.125,
         "y": 0.1875,
@@ -1940,7 +1940,7 @@
     {
       "id": "box_165",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -2.625,
         "y": 0.1875,
@@ -1956,7 +1956,7 @@
     {
       "id": "box_166",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -3.125,
         "y": 0.1875,
@@ -1972,7 +1972,7 @@
     {
       "id": "box_167",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -3.625,
         "y": 0.1875,
@@ -1988,7 +1988,7 @@
     {
       "id": "box_168",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -4.125,
         "y": 0.1875,
@@ -2004,7 +2004,7 @@
     {
       "id": "box_169",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -4.625,
         "y": 0.1875,
@@ -2020,7 +2020,7 @@
     {
       "id": "box_170",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -5.125,
         "y": 0.1875,
@@ -2036,7 +2036,7 @@
     {
       "id": "box_171",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -5.625,
         "y": 0.1875,
@@ -2052,7 +2052,7 @@
     {
       "id": "box_172",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -6.125,
         "y": 0.1875,
@@ -2068,7 +2068,7 @@
     {
       "id": "box_173",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -6.625,
         "y": 0.1875,
@@ -2084,7 +2084,7 @@
     {
       "id": "box_174",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -7.125,
         "y": 0.1875,
@@ -2100,7 +2100,7 @@
     {
       "id": "box_175",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -7.625,
         "y": 0.1875,
@@ -2116,7 +2116,7 @@
     {
       "id": "box_176",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -8.125,
         "y": 0.1875,
@@ -2132,7 +2132,7 @@
     {
       "id": "box_177",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -8.625,
         "y": 0.1875,
@@ -2148,7 +2148,7 @@
     {
       "id": "box_178",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -9.125,
         "y": 0.1875,
@@ -2164,7 +2164,7 @@
     {
       "id": "box_179",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -9.625,
         "y": 0.1875,
@@ -2180,7 +2180,7 @@
     {
       "id": "box_180",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -10.125,
         "y": 0.1875,
@@ -2196,7 +2196,7 @@
     {
       "id": "box_181",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -10.625,
         "y": 0.1875,
@@ -2212,7 +2212,7 @@
     {
       "id": "box_182",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -11.125,
         "y": 0.1875,
@@ -2228,7 +2228,7 @@
     {
       "id": "box_183",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -11.625,
         "y": 0.1875,
@@ -2244,7 +2244,7 @@
     {
       "id": "box_184",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -12.125,
         "y": 0.1875,
@@ -2260,7 +2260,7 @@
     {
       "id": "box_185",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -12.625,
         "y": 0.1875,
@@ -2276,7 +2276,7 @@
     {
       "id": "box_186",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -13.125,
         "y": 0.1875,
@@ -2292,7 +2292,7 @@
     {
       "id": "box_187",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -13.625,
         "y": 0.1875,
@@ -2308,7 +2308,7 @@
     {
       "id": "box_188",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -14.125,
         "y": 0.1875,
@@ -2324,7 +2324,7 @@
     {
       "id": "box_189",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -14.125,
         "y": 0.1875,
@@ -2340,7 +2340,7 @@
     {
       "id": "box_190",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -13.625,
         "y": 0.1875,
@@ -2356,7 +2356,7 @@
     {
       "id": "box_191",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -13.125,
         "y": 0.1875,
@@ -2372,7 +2372,7 @@
     {
       "id": "box_192",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -12.625,
         "y": 0.1875,
@@ -2388,7 +2388,7 @@
     {
       "id": "box_193",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -12.125,
         "y": 0.1875,
@@ -2404,7 +2404,7 @@
     {
       "id": "box_194",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -11.625,
         "y": 0.1875,
@@ -2420,7 +2420,7 @@
     {
       "id": "box_195",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -11.125,
         "y": 0.1875,
@@ -2436,7 +2436,7 @@
     {
       "id": "box_196",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -10.625,
         "y": 0.1875,
@@ -2452,7 +2452,7 @@
     {
       "id": "box_197",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -10.125,
         "y": 0.1875,
@@ -2468,7 +2468,7 @@
     {
       "id": "box_198",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -9.625,
         "y": 0.1875,
@@ -2484,7 +2484,7 @@
     {
       "id": "box_199",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -9.125,
         "y": 0.1875,
@@ -2500,7 +2500,7 @@
     {
       "id": "box_200",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -8.625,
         "y": 0.1875,
@@ -2516,7 +2516,7 @@
     {
       "id": "box_201",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -8.125,
         "y": 0.1875,
@@ -2532,7 +2532,7 @@
     {
       "id": "box_202",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -7.625,
         "y": 0.1875,
@@ -2548,7 +2548,7 @@
     {
       "id": "box_204",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -7.125,
         "y": 0.1875,
@@ -2564,7 +2564,7 @@
     {
       "id": "box_205",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -6.625,
         "y": 0.1875,
@@ -2580,7 +2580,7 @@
     {
       "id": "box_206",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -6.125,
         "y": 0.1875,
@@ -2596,7 +2596,7 @@
     {
       "id": "box_207",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -5.625,
         "y": 0.1875,
@@ -2612,7 +2612,7 @@
     {
       "id": "box_209",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -5.125,
         "y": 0.1875,
@@ -2628,7 +2628,7 @@
     {
       "id": "box_210",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -4.625,
         "y": 0.1875,
@@ -2644,7 +2644,7 @@
     {
       "id": "box_211",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -4.125,
         "y": 0.1875,
@@ -2660,7 +2660,7 @@
     {
       "id": "box_212",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -3.625,
         "y": 0.1875,
@@ -2676,7 +2676,7 @@
     {
       "id": "box_213",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -3.125,
         "y": 0.1875,
@@ -2692,7 +2692,7 @@
     {
       "id": "box_214",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -2.625,
         "y": 0.1875,
@@ -2708,7 +2708,7 @@
     {
       "id": "box_215",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -2.125,
         "y": 0.1875,
@@ -2724,7 +2724,7 @@
     {
       "id": "box_216",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -1.625,
         "y": 0.1875,
@@ -2740,7 +2740,7 @@
     {
       "id": "box_217",
       "label": "",
-      "presetName": "FileCabinet",
+      "presetName": "FileCabinetWider",
       "position": {
         "x": -1.125,
         "y": 0.1875,
@@ -2756,7 +2756,7 @@
     {
       "id": "box_223",
       "label": "",
-      "presetName": "EastWall",
+      "presetName": "North",
       "position": {
         "x": 0.625,
         "y": 0.4375,
@@ -2772,7 +2772,7 @@
     {
       "id": "box_224",
       "label": "",
-      "presetName": "EastWall",
+      "presetName": "North",
       "position": {
         "x": 0.625,
         "y": 0.4375,
@@ -2788,7 +2788,7 @@
     {
       "id": "box_225",
       "label": "",
-      "presetName": "EastWall",
+      "presetName": "North",
       "position": {
         "x": 0.625,
         "y": 0.4375,
@@ -2804,7 +2804,7 @@
     {
       "id": "box_226",
       "label": "",
-      "presetName": "EastWall",
+      "presetName": "North",
       "position": {
         "x": 0.625,
         "y": 0.4375,
@@ -2820,7 +2820,7 @@
     {
       "id": "box_227",
       "label": "",
-      "presetName": "EastWall",
+      "presetName": "North",
       "position": {
         "x": 0.625,
         "y": 0.4375,
@@ -2836,7 +2836,7 @@
     {
       "id": "box_228",
       "label": "",
-      "presetName": "EastWall",
+      "presetName": "North",
       "position": {
         "x": 0.625,
         "y": 0.4375,
@@ -2852,7 +2852,7 @@
     {
       "id": "box_229",
       "label": "",
-      "presetName": "EastWall",
+      "presetName": "North",
       "position": {
         "x": 0.625,
         "y": 0.4375,
@@ -2868,7 +2868,7 @@
     {
       "id": "box_230",
       "label": "",
-      "presetName": "EastWall",
+      "presetName": "North",
       "position": {
         "x": 0.625,
         "y": 0.4375,
@@ -2884,7 +2884,7 @@
     {
       "id": "box_231",
       "label": "",
-      "presetName": "EastWall",
+      "presetName": "North",
       "position": {
         "x": 0.625,
         "y": 0.4375,
@@ -2900,7 +2900,7 @@
     {
       "id": "box_232",
       "label": "",
-      "presetName": "EastWall",
+      "presetName": "North",
       "position": {
         "x": 0.625,
         "y": 0.4375,
@@ -2916,7 +2916,7 @@
     {
       "id": "box_233",
       "label": "",
-      "presetName": "EastWall",
+      "presetName": "North",
       "position": {
         "x": 0.625,
         "y": 0.4375,
@@ -2932,7 +2932,7 @@
     {
       "id": "box_234",
       "label": "",
-      "presetName": "EastWall",
+      "presetName": "North",
       "position": {
         "x": 0.625,
         "y": 0.4375,
@@ -2948,7 +2948,7 @@
     {
       "id": "box_236",
       "label": "",
-      "presetName": "EastWall",
+      "presetName": "North",
       "position": {
         "x": 0.625,
         "y": 0.4375,
@@ -2964,7 +2964,7 @@
     {
       "id": "box_237",
       "label": "",
-      "presetName": "EastWall",
+      "presetName": "North",
       "position": {
         "x": 0.625,
         "y": 0.4375,
@@ -2980,7 +2980,7 @@
     {
       "id": "box_238",
       "label": "",
-      "presetName": "EastWall",
+      "presetName": "North",
       "position": {
         "x": 0.625,
         "y": 0.4375,
@@ -3762,14 +3762,13 @@
       "capacity": "Unset"
     },
     {
-      "id": "box_339",
-      "label": "PACK STATION",
-      "presetName": "LandmarkMain",
-      "isLandmark": true,
+      "id": "box_337",
+      "label": "",
+      "presetName": "Packing",
       "position": {
-        "x": -16,
+        "x": -16.75,
         "y": 0.5,
-        "z": 16.75
+        "z": 17.25
       },
       "size": {
         "w": 1,
@@ -3779,1306 +3778,18 @@
       "capacity": "Unset"
     },
     {
-      "id": "box_340",
-      "label": "PACK STATION",
-      "presetName": "LandmarkMain",
-      "isLandmark": true,
+      "id": "box_338",
+      "label": "",
+      "presetName": "Packing",
       "position": {
-        "x": -16,
+        "x": -16.75,
         "y": 0.5,
-        "z": 17.75
+        "z": 16.25
       },
       "size": {
         "w": 1,
         "h": 1,
         "d": 1
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_341",
-      "label": "PACK STATION",
-      "presetName": "LandmarkMain",
-      "isLandmark": true,
-      "position": {
-        "x": -17,
-        "y": 0.5,
-        "z": 16.75
-      },
-      "size": {
-        "w": 1,
-        "h": 1,
-        "d": 1
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_342",
-      "label": "PACK STATION",
-      "presetName": "LandmarkMain",
-      "isLandmark": true,
-      "position": {
-        "x": -17,
-        "y": 0.5,
-        "z": 17.75
-      },
-      "size": {
-        "w": 1,
-        "h": 1,
-        "d": 1
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_343",
-      "label": "RECEIVING BAY",
-      "presetName": "LandmarkMain",
-      "isLandmark": true,
-      "position": {
-        "x": -19.5,
-        "y": 0.5,
-        "z": 16.5
-      },
-      "size": {
-        "w": 1,
-        "h": 1,
-        "d": 1
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_344",
-      "label": "RECEIVING BAY",
-      "presetName": "LandmarkMain",
-      "isLandmark": true,
-      "position": {
-        "x": -19.5,
-        "y": 0.5,
-        "z": 17.5
-      },
-      "size": {
-        "w": 1,
-        "h": 1,
-        "d": 1
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_345",
-      "label": "SMALLS",
-      "presetName": "LandmarkMain",
-      "isLandmark": true,
-      "position": {
-        "x": -18.75,
-        "y": 0.5,
-        "z": 7.25
-      },
-      "size": {
-        "w": 1,
-        "h": 1,
-        "d": 1
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_346",
-      "label": "SMALLS",
-      "presetName": "LandmarkMain",
-      "isLandmark": true,
-      "position": {
-        "x": -18.75,
-        "y": 0.5,
-        "z": 8.25
-      },
-      "size": {
-        "w": 1,
-        "h": 1,
-        "d": 1
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_347",
-      "label": "BOSSMAN",
-      "presetName": "LandmarkMain",
-      "isLandmark": true,
-      "position": {
-        "x": -18.75,
-        "y": 0.5,
-        "z": 5.625
-      },
-      "size": {
-        "w": 1,
-        "h": 1,
-        "d": 1
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_348",
-      "label": "",
-      "presetName": "SouthWall",
-      "position": {
-        "x": -1.5,
-        "y": 1.125,
-        "z": 19.5
-      },
-      "size": {
-        "w": 0.75,
-        "h": 0.75,
-        "d": 0.75
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_349",
-      "label": "",
-      "presetName": "SouthWall",
-      "position": {
-        "x": -2.25,
-        "y": 1.125,
-        "z": 19.5
-      },
-      "size": {
-        "w": 0.75,
-        "h": 0.75,
-        "d": 0.75
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_350",
-      "label": "",
-      "presetName": "SouthWall",
-      "position": {
-        "x": -3,
-        "y": 1.125,
-        "z": 19.5
-      },
-      "size": {
-        "w": 0.75,
-        "h": 0.75,
-        "d": 0.75
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_351",
-      "label": "",
-      "presetName": "SouthWall",
-      "position": {
-        "x": -3.75,
-        "y": 1.125,
-        "z": 19.5
-      },
-      "size": {
-        "w": 0.75,
-        "h": 0.75,
-        "d": 0.75
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_352",
-      "label": "",
-      "presetName": "SouthWall",
-      "position": {
-        "x": -4.5,
-        "y": 1.125,
-        "z": 19.5
-      },
-      "size": {
-        "w": 0.75,
-        "h": 0.75,
-        "d": 0.75
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_353",
-      "label": "",
-      "presetName": "SouthWall",
-      "position": {
-        "x": -5.25,
-        "y": 1.125,
-        "z": 19.5
-      },
-      "size": {
-        "w": 0.75,
-        "h": 0.75,
-        "d": 0.75
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_354",
-      "label": "",
-      "presetName": "SouthWall",
-      "position": {
-        "x": -1.5,
-        "y": 1.875,
-        "z": 19.5
-      },
-      "size": {
-        "w": 0.75,
-        "h": 0.75,
-        "d": 0.75
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_355",
-      "label": "",
-      "presetName": "SouthWall",
-      "position": {
-        "x": -1.5,
-        "y": 2.625,
-        "z": 19.5
-      },
-      "size": {
-        "w": 0.75,
-        "h": 0.75,
-        "d": 0.75
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_356",
-      "label": "",
-      "presetName": "SouthWall",
-      "position": {
-        "x": -2.25,
-        "y": 1.875,
-        "z": 19.5
-      },
-      "size": {
-        "w": 0.75,
-        "h": 0.75,
-        "d": 0.75
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_357",
-      "label": "",
-      "presetName": "SouthWall",
-      "position": {
-        "x": -2.25,
-        "y": 2.625,
-        "z": 19.5
-      },
-      "size": {
-        "w": 0.75,
-        "h": 0.75,
-        "d": 0.75
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_358",
-      "label": "",
-      "presetName": "SouthWall",
-      "position": {
-        "x": -3,
-        "y": 1.875,
-        "z": 19.5
-      },
-      "size": {
-        "w": 0.75,
-        "h": 0.75,
-        "d": 0.75
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_359",
-      "label": "",
-      "presetName": "SouthWall",
-      "position": {
-        "x": -3,
-        "y": 2.625,
-        "z": 19.5
-      },
-      "size": {
-        "w": 0.75,
-        "h": 0.75,
-        "d": 0.75
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_360",
-      "label": "",
-      "presetName": "SouthWall",
-      "position": {
-        "x": -3.75,
-        "y": 1.875,
-        "z": 19.5
-      },
-      "size": {
-        "w": 0.75,
-        "h": 0.75,
-        "d": 0.75
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_361",
-      "label": "",
-      "presetName": "SouthWall",
-      "position": {
-        "x": -3.75,
-        "y": 2.625,
-        "z": 19.5
-      },
-      "size": {
-        "w": 0.75,
-        "h": 0.75,
-        "d": 0.75
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_362",
-      "label": "",
-      "presetName": "SouthWall",
-      "position": {
-        "x": -4.5,
-        "y": 1.875,
-        "z": 19.5
-      },
-      "size": {
-        "w": 0.75,
-        "h": 0.75,
-        "d": 0.75
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_363",
-      "label": "",
-      "presetName": "SouthWall",
-      "position": {
-        "x": -4.5,
-        "y": 2.625,
-        "z": 19.5
-      },
-      "size": {
-        "w": 0.75,
-        "h": 0.75,
-        "d": 0.75
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_364",
-      "label": "",
-      "presetName": "SouthWall",
-      "position": {
-        "x": -5.25,
-        "y": 1.875,
-        "z": 19.5
-      },
-      "size": {
-        "w": 0.75,
-        "h": 0.75,
-        "d": 0.75
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_365",
-      "label": "",
-      "presetName": "SouthWall",
-      "position": {
-        "x": -5.25,
-        "y": 2.625,
-        "z": 19.5
-      },
-      "size": {
-        "w": 0.75,
-        "h": 0.75,
-        "d": 0.75
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_366",
-      "label": "",
-      "presetName": "SouthWall",
-      "position": {
-        "x": -6,
-        "y": 1.125,
-        "z": 19.5
-      },
-      "size": {
-        "w": 0.75,
-        "h": 0.75,
-        "d": 0.75
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_367",
-      "label": "",
-      "presetName": "SouthWall",
-      "position": {
-        "x": -6.75,
-        "y": 1.125,
-        "z": 19.5
-      },
-      "size": {
-        "w": 0.75,
-        "h": 0.75,
-        "d": 0.75
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_368",
-      "label": "",
-      "presetName": "SouthWall",
-      "position": {
-        "x": -7.5,
-        "y": 1.125,
-        "z": 19.5
-      },
-      "size": {
-        "w": 0.75,
-        "h": 0.75,
-        "d": 0.75
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_369",
-      "label": "",
-      "presetName": "SouthWall",
-      "position": {
-        "x": -8.25,
-        "y": 1.125,
-        "z": 19.5
-      },
-      "size": {
-        "w": 0.75,
-        "h": 0.75,
-        "d": 0.75
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_370",
-      "label": "",
-      "presetName": "SouthWall",
-      "position": {
-        "x": -9,
-        "y": 1.125,
-        "z": 19.5
-      },
-      "size": {
-        "w": 0.75,
-        "h": 0.75,
-        "d": 0.75
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_371",
-      "label": "",
-      "presetName": "SouthWall",
-      "position": {
-        "x": -9.75,
-        "y": 1.125,
-        "z": 19.5
-      },
-      "size": {
-        "w": 0.75,
-        "h": 0.75,
-        "d": 0.75
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_372",
-      "label": "",
-      "presetName": "SouthWall",
-      "position": {
-        "x": -9,
-        "y": 1.875,
-        "z": 19.5
-      },
-      "size": {
-        "w": 0.75,
-        "h": 0.75,
-        "d": 0.75
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_373",
-      "label": "",
-      "presetName": "SouthWall",
-      "position": {
-        "x": -9.75,
-        "y": 1.875,
-        "z": 19.5
-      },
-      "size": {
-        "w": 0.75,
-        "h": 0.75,
-        "d": 0.75
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_374",
-      "label": "",
-      "presetName": "SouthWall",
-      "position": {
-        "x": -9.75,
-        "y": 2.625,
-        "z": 19.5
-      },
-      "size": {
-        "w": 0.75,
-        "h": 0.75,
-        "d": 0.75
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_375",
-      "label": "",
-      "presetName": "SouthWall",
-      "position": {
-        "x": -9,
-        "y": 2.625,
-        "z": 19.5
-      },
-      "size": {
-        "w": 0.75,
-        "h": 0.75,
-        "d": 0.75
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_376",
-      "label": "",
-      "presetName": "SouthWall",
-      "position": {
-        "x": -8.25,
-        "y": 1.875,
-        "z": 19.5
-      },
-      "size": {
-        "w": 0.75,
-        "h": 0.75,
-        "d": 0.75
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_377",
-      "label": "",
-      "presetName": "SouthWall",
-      "position": {
-        "x": -7.5,
-        "y": 1.875,
-        "z": 19.5
-      },
-      "size": {
-        "w": 0.75,
-        "h": 0.75,
-        "d": 0.75
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_378",
-      "label": "",
-      "presetName": "SouthWall",
-      "position": {
-        "x": -6.75,
-        "y": 1.875,
-        "z": 19.5
-      },
-      "size": {
-        "w": 0.75,
-        "h": 0.75,
-        "d": 0.75
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_379",
-      "label": "",
-      "presetName": "SouthWall",
-      "position": {
-        "x": -6,
-        "y": 1.875,
-        "z": 19.5
-      },
-      "size": {
-        "w": 0.75,
-        "h": 0.75,
-        "d": 0.75
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_380",
-      "label": "",
-      "presetName": "SouthWall",
-      "position": {
-        "x": -6,
-        "y": 2.625,
-        "z": 19.5
-      },
-      "size": {
-        "w": 0.75,
-        "h": 0.75,
-        "d": 0.75
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_381",
-      "label": "",
-      "presetName": "SouthWall",
-      "position": {
-        "x": -6.75,
-        "y": 2.625,
-        "z": 19.5
-      },
-      "size": {
-        "w": 0.75,
-        "h": 0.75,
-        "d": 0.75
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_382",
-      "label": "",
-      "presetName": "SouthWall",
-      "position": {
-        "x": -7.5,
-        "y": 2.625,
-        "z": 19.5
-      },
-      "size": {
-        "w": 0.75,
-        "h": 0.75,
-        "d": 0.75
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_383",
-      "label": "",
-      "presetName": "SouthWall",
-      "position": {
-        "x": -8.25,
-        "y": 2.625,
-        "z": 19.5
-      },
-      "size": {
-        "w": 0.75,
-        "h": 0.75,
-        "d": 0.75
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_384",
-      "label": "",
-      "presetName": "SmallCabinet",
-      "position": {
-        "x": -17.125,
-        "y": 0.1875,
-        "z": 6.125
-      },
-      "size": {
-        "w": 0.375,
-        "h": 0.375,
-        "d": 0.375
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_385",
-      "label": "",
-      "presetName": "SmallCabinet",
-      "position": {
-        "x": -17.125,
-        "y": 0.5625,
-        "z": 6.125
-      },
-      "size": {
-        "w": 0.375,
-        "h": 0.375,
-        "d": 0.375
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_386",
-      "label": "",
-      "presetName": "SmallCabinet",
-      "position": {
-        "x": -17.25,
-        "y": 0.9375,
-        "z": 11
-      },
-      "size": {
-        "w": 0.375,
-        "h": 0.375,
-        "d": 0.375
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_387",
-      "label": "",
-      "presetName": "SmallCabinet",
-      "position": {
-        "x": -17.25,
-        "y": 1.3125,
-        "z": 11
-      },
-      "size": {
-        "w": 0.375,
-        "h": 0.375,
-        "d": 0.375
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_388",
-      "label": "",
-      "presetName": "SmallCabinet",
-      "position": {
-        "x": -17.25,
-        "y": 0.9375,
-        "z": 10.625
-      },
-      "size": {
-        "w": 0.375,
-        "h": 0.375,
-        "d": 0.375
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_389",
-      "label": "",
-      "presetName": "SmallCabinet",
-      "position": {
-        "x": -17.25,
-        "y": 0.9375,
-        "z": 10.25
-      },
-      "size": {
-        "w": 0.375,
-        "h": 0.375,
-        "d": 0.375
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_390",
-      "label": "",
-      "presetName": "SmallCabinet",
-      "position": {
-        "x": -17.25,
-        "y": 1.3125,
-        "z": 10.625
-      },
-      "size": {
-        "w": 0.375,
-        "h": 0.375,
-        "d": 0.375
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_391",
-      "label": "",
-      "presetName": "SmallCabinet",
-      "position": {
-        "x": -17.25,
-        "y": 1.3125,
-        "z": 10.25
-      },
-      "size": {
-        "w": 0.375,
-        "h": 0.375,
-        "d": 0.375
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_392",
-      "label": "",
-      "presetName": "SmallCabinet",
-      "position": {
-        "x": -17.25,
-        "y": 0.5625,
-        "z": 9.875
-      },
-      "size": {
-        "w": 0.375,
-        "h": 0.375,
-        "d": 0.375
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_393",
-      "label": "",
-      "presetName": "SmallCabinet",
-      "position": {
-        "x": -17.25,
-        "y": 0.9375,
-        "z": 9.875
-      },
-      "size": {
-        "w": 0.375,
-        "h": 0.375,
-        "d": 0.375
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_394",
-      "label": "",
-      "presetName": "SmallCabinet",
-      "position": {
-        "x": -17.25,
-        "y": 1.3125,
-        "z": 9.875
-      },
-      "size": {
-        "w": 0.375,
-        "h": 0.375,
-        "d": 0.375
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_395",
-      "label": "",
-      "presetName": "SmallCabinet",
-      "position": {
-        "x": -17.25,
-        "y": 0.5625,
-        "z": 9.5
-      },
-      "size": {
-        "w": 0.375,
-        "h": 0.375,
-        "d": 0.375
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_396",
-      "label": "",
-      "presetName": "SmallCabinet",
-      "position": {
-        "x": -17.25,
-        "y": 0.9375,
-        "z": 9.5
-      },
-      "size": {
-        "w": 0.375,
-        "h": 0.375,
-        "d": 0.375
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_397",
-      "label": "",
-      "presetName": "SmallCabinet",
-      "position": {
-        "x": -17.25,
-        "y": 1.3125,
-        "z": 9.5
-      },
-      "size": {
-        "w": 0.375,
-        "h": 0.375,
-        "d": 0.375
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_398",
-      "label": "",
-      "presetName": "SmallCabinet",
-      "position": {
-        "x": -17.25,
-        "y": 0.5625,
-        "z": 9.125
-      },
-      "size": {
-        "w": 0.375,
-        "h": 0.375,
-        "d": 0.375
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_399",
-      "label": "",
-      "presetName": "SmallCabinet",
-      "position": {
-        "x": -17.25,
-        "y": 0.9375,
-        "z": 9.125
-      },
-      "size": {
-        "w": 0.375,
-        "h": 0.375,
-        "d": 0.375
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_400",
-      "label": "",
-      "presetName": "SmallCabinet",
-      "position": {
-        "x": -17.25,
-        "y": 1.3125,
-        "z": 9.125
-      },
-      "size": {
-        "w": 0.375,
-        "h": 0.375,
-        "d": 0.375
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_401",
-      "label": "",
-      "presetName": "SmallCabinet",
-      "position": {
-        "x": -17.25,
-        "y": 0.5625,
-        "z": 8.75
-      },
-      "size": {
-        "w": 0.375,
-        "h": 0.375,
-        "d": 0.375
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_402",
-      "label": "",
-      "presetName": "SmallCabinet",
-      "position": {
-        "x": -17.25,
-        "y": 0.9375,
-        "z": 8.75
-      },
-      "size": {
-        "w": 0.375,
-        "h": 0.375,
-        "d": 0.375
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_403",
-      "label": "",
-      "presetName": "SmallCabinet",
-      "position": {
-        "x": -17.25,
-        "y": 1.3125,
-        "z": 8.75
-      },
-      "size": {
-        "w": 0.375,
-        "h": 0.375,
-        "d": 0.375
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_404",
-      "label": "",
-      "presetName": "SmallCabinet",
-      "position": {
-        "x": -17.25,
-        "y": 0.5625,
-        "z": 8.375
-      },
-      "size": {
-        "w": 0.375,
-        "h": 0.375,
-        "d": 0.375
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_405",
-      "label": "",
-      "presetName": "SmallCabinet",
-      "position": {
-        "x": -17.25,
-        "y": 0.9375,
-        "z": 8.375
-      },
-      "size": {
-        "w": 0.375,
-        "h": 0.375,
-        "d": 0.375
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_406",
-      "label": "",
-      "presetName": "SmallCabinet",
-      "position": {
-        "x": -17.25,
-        "y": 1.3125,
-        "z": 8.375
-      },
-      "size": {
-        "w": 0.375,
-        "h": 0.375,
-        "d": 0.375
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_407",
-      "label": "",
-      "presetName": "SmallCabinet",
-      "position": {
-        "x": -17.25,
-        "y": 0.5625,
-        "z": 8
-      },
-      "size": {
-        "w": 0.375,
-        "h": 0.375,
-        "d": 0.375
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_408",
-      "label": "",
-      "presetName": "SmallCabinet",
-      "position": {
-        "x": -17.25,
-        "y": 0.9375,
-        "z": 8
-      },
-      "size": {
-        "w": 0.375,
-        "h": 0.375,
-        "d": 0.375
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_409",
-      "label": "",
-      "presetName": "SmallCabinet",
-      "position": {
-        "x": -17.25,
-        "y": 1.3125,
-        "z": 8
-      },
-      "size": {
-        "w": 0.375,
-        "h": 0.375,
-        "d": 0.375
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_410",
-      "label": "",
-      "presetName": "SmallCabinet",
-      "position": {
-        "x": -17.25,
-        "y": 0.5625,
-        "z": 7.625
-      },
-      "size": {
-        "w": 0.375,
-        "h": 0.375,
-        "d": 0.375
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_411",
-      "label": "",
-      "presetName": "SmallCabinet",
-      "position": {
-        "x": -17.25,
-        "y": 0.9375,
-        "z": 7.625
-      },
-      "size": {
-        "w": 0.375,
-        "h": 0.375,
-        "d": 0.375
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_412",
-      "label": "",
-      "presetName": "SmallCabinet",
-      "position": {
-        "x": -17.25,
-        "y": 1.3125,
-        "z": 7.625
-      },
-      "size": {
-        "w": 0.375,
-        "h": 0.375,
-        "d": 0.375
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_413",
-      "label": "",
-      "presetName": "SmallCabinet",
-      "position": {
-        "x": -17.25,
-        "y": 0.5625,
-        "z": 7.25
-      },
-      "size": {
-        "w": 0.375,
-        "h": 0.375,
-        "d": 0.375
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_414",
-      "label": "",
-      "presetName": "SmallCabinet",
-      "position": {
-        "x": -17.25,
-        "y": 0.9375,
-        "z": 7.25
-      },
-      "size": {
-        "w": 0.375,
-        "h": 0.375,
-        "d": 0.375
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_415",
-      "label": "",
-      "presetName": "SmallCabinet",
-      "position": {
-        "x": -17.25,
-        "y": 1.3125,
-        "z": 7.25
-      },
-      "size": {
-        "w": 0.375,
-        "h": 0.375,
-        "d": 0.375
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_416",
-      "label": "",
-      "presetName": "SmallCabinet",
-      "position": {
-        "x": -17.25,
-        "y": 0.5625,
-        "z": 6.875
-      },
-      "size": {
-        "w": 0.375,
-        "h": 0.375,
-        "d": 0.375
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_417",
-      "label": "",
-      "presetName": "SmallCabinet",
-      "position": {
-        "x": -17.25,
-        "y": 0.9375,
-        "z": 6.875
-      },
-      "size": {
-        "w": 0.375,
-        "h": 0.375,
-        "d": 0.375
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_418",
-      "label": "",
-      "presetName": "SmallCabinet",
-      "position": {
-        "x": -17.25,
-        "y": 1.3125,
-        "z": 6.875
-      },
-      "size": {
-        "w": 0.375,
-        "h": 0.375,
-        "d": 0.375
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_419",
-      "label": "",
-      "presetName": "SmallCabinet",
-      "position": {
-        "x": -17.125,
-        "y": 0.9375,
-        "z": 6.125
-      },
-      "size": {
-        "w": 0.375,
-        "h": 0.375,
-        "d": 0.375
-      },
-      "capacity": "Unset"
-    },
-    {
-      "id": "box_420",
-      "label": "",
-      "presetName": "SmallCabinet",
-      "position": {
-        "x": -17.125,
-        "y": 1.3125,
-        "z": 6.125
-      },
-      "size": {
-        "w": 0.375,
-        "h": 0.375,
-        "d": 0.375
       },
       "capacity": "Unset"
     }
@@ -5103,7 +3814,7 @@
       "d": 1
     },
     {
-      "name": "SouthWall",
+      "name": "Main",
       "w": 0.75,
       "h": 0.75,
       "d": 0.75
@@ -5129,11 +3840,23 @@
     {
       "name": "FileCabinet",
       "w": 0.5,
+      "h": 0.25,
+      "d": 0.25
+    },
+    {
+      "name": "FileCabinet",
+      "w": 0.375,
       "h": 0.375,
       "d": 0.5
     },
     {
-      "name": "EastWall",
+      "name": "FileCabinetWider",
+      "w": 0.5,
+      "h": 0.375,
+      "d": 0.5
+    },
+    {
+      "name": "North",
       "w": 0.875,
       "h": 0.875,
       "d": 0.75
@@ -5179,13 +3902,6 @@
       "w": 1,
       "h": 1,
       "d": 1
-    },
-    {
-      "name": "LandmarkMain",
-      "w": 1,
-      "h": 1,
-      "d": 1,
-      "isLandmark": true
     }
   ]
 }

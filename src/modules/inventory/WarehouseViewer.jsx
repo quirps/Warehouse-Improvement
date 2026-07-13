@@ -5,29 +5,29 @@ import {
   BG_COLOR,
   buildViewerBoxMesh,
   updateViewerBoxMesh,
-  buildGrid,
   addSceneLights,
+  buildGrid,
   disposeGroup,
+  findContiguousBoxes,
 } from "../builder/threeHelpers.js";
 import { generateLayoutData } from "../../data/mockData.js";
 import warehouseData from "../../data/warehouse.wh.json";
-import WarehouseBuilder from "../builder/WarehouseBuilder.jsx";
-import { MockItemsPanel } from "./InventoryUI.jsx";
-import { useInventory } from "../../hooks/useInventory.js";
 
 function WarehouseViewer({ dominantType, activeItem }) {
   const mountRef = useRef(null);
   const sceneRef = useRef(null);
-  const cameraRef = useRef(null);
-  const rendererRef = useRef(null);
+  const camRef = useRef(null);
+  const rendRef = useRef(null);
+  const meshMapRef = useRef(new Map());
   const rafRef = useRef(null);
-  const boxGroupsMapRef = useRef(new Map());
+  
   const [selectedBoxId, setSelectedBoxId] = useState(null);
   const [selectedItemType, setSelectedItemType] = useState(null);
   const [colorMode, setColorMode] = useState('capacity');
-  
+  const [initialized, setInitialized] = useState(false); // NEW
+
   const boxes = useMemo(() => generateLayoutData(warehouseData.boxes), []);
-  const raycaster = useRef(new THREE.Raycaster());
+  const rcRef = useRef(new THREE.Raycaster());
 
   // Camera state mimicking Builder
   const camSph = useRef({ r: 26, phi: 0.82, theta: 0.68 });
@@ -37,7 +37,7 @@ function WarehouseViewer({ dominantType, activeItem }) {
   const applyCamera = useCallback(() => {
     const sp = camSph.current;
     sp.phi = Math.max(0.07, Math.min(Math.PI / 2.05, sp.phi));
-    const cam = cameraRef.current;
+    const cam = camRef.current;
     if (!cam) return;
     cam.position.set(
       camTarget.current.x + sp.r * Math.sin(sp.phi) * Math.sin(sp.theta),
@@ -48,57 +48,65 @@ function WarehouseViewer({ dominantType, activeItem }) {
   }, []);
 
   useEffect(() => {
-    const W = mountRef.current.clientWidth;
-    const H = mountRef.current.clientHeight;
+    const el = mountRef.current;
+    if (!el) return;
+    const W = el.clientWidth,
+      H = el.clientHeight;
 
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(W, H);
     renderer.setClearColor(new THREE.Color(BG_COLOR));
-    mountRef.current.appendChild(renderer.domElement);
-    rendererRef.current = renderer;
+    el.appendChild(renderer.domElement);
+    rendRef.current = renderer;
 
     const scene = new THREE.Scene();
     scene.fog = new THREE.FogExp2(BG_COLOR, 0.02);
     sceneRef.current = scene;
 
-    const camera = new THREE.PerspectiveCamera(45, W / H, 0.1, 200);
-    cameraRef.current = camera;
+    const cam = new THREE.PerspectiveCamera(45, W / H, 0.1, 200);
+    camRef.current = cam;
     applyCamera();
 
     addSceneLights(scene);
     scene.add(buildGrid(60, 1));
+    
+    setInitialized(true); // TRIGGER
 
     let live = true;
     const tick = () => {
       if (!live) return;
       rafRef.current = requestAnimationFrame(tick);
-      renderer.render(scene, camera);
+      renderer.render(scene, cam);
     };
     tick();
+
+    const onResize = () => {
+      const W2 = el.clientWidth,
+        H2 = el.clientHeight;
+      cam.aspect = W2 / H2;
+      cam.updateProjectionMatrix();
+      renderer.setSize(W2, H2);
+    };
+    window.addEventListener("resize", onResize);
 
     return () => {
       live = false;
       cancelAnimationFrame(rafRef.current);
-      if (mountRef.current) {
-        if (rendererRef.current && rendererRef.current.domElement.parentNode === mountRef.current) {
-          mountRef.current.removeChild(rendererRef.current.domElement);
-        }
-      }
-      if (rendererRef.current) {
-        rendererRef.current.dispose();
-        rendererRef.current = null;
-      }
-      sceneRef.current = null;
+      window.removeEventListener("resize", onResize);
+      renderer.dispose();
+      if (el && renderer.domElement.parentNode === el)
+        el.removeChild(renderer.domElement);
     };
   }, [applyCamera]);
 
   useEffect(() => {
     const scene = sceneRef.current;
-    if (!scene || !cameraRef.current || !rendererRef.current) return;
-
+    if (!scene || !initialized) return; // GUARD
+    
+    // Automatically use the first item type if nothing else is active
     const filterType = activeItem?.ItemType || dominantType;
-    const map = boxGroupsMapRef.current;
+    const map = meshMapRef.current;
     const currentIds = new Set(boxes.map(b => b.id));
 
     // Remove boxes not in current data
@@ -110,13 +118,56 @@ function WarehouseViewer({ dominantType, activeItem }) {
         }
     }
 
+    // Identify contiguous landmark clusters
+    const contiguousLandmarkIds = new Set();
+    const clusterCenters = new Map();
+    const clusterPrimaryBox = new Map();
+
+    boxes.filter(b => b.isLandmark).forEach(b => {
+      if (!contiguousLandmarkIds.has(b.id)) {
+        const cluster = findContiguousBoxes(b.id, boxes);
+        let hasLandmark = false;
+        let sumX = 0, sumZ = 0, count = 0;
+        let minId = null;
+        
+        cluster.forEach(id => {
+          const box = boxes.find(b => b.id === id);
+          if (box?.isLandmark) {
+            hasLandmark = true;
+            sumX += box.position.x;
+            sumZ += box.position.z;
+            count++;
+            if (minId === null || id < minId) minId = id;
+          }
+        });
+
+        if (hasLandmark) {
+          const center = { x: sumX / count, z: sumZ / count };
+          cluster.forEach(id => {
+            contiguousLandmarkIds.add(id);
+            clusterCenters.set(id, center);
+            clusterPrimaryBox.set(id, minId);
+          });
+        }
+      }
+    });
+
     // Add/Update boxes
     boxes.forEach((box) => {
       const isMatch = filterType && box.itemType === filterType;
       const highlighted = isMatch;
-      const dimmed = filterType && !isMatch;
+      const dimmed = !box.isLandmark && filterType && !isMatch;
       const selected = box.id === selectedBoxId;
-      const flags = { highlighted, dimmed, selected, colorMode };
+      const isPrimary = box.isLandmark && clusterPrimaryBox.get(box.id) === box.id;
+      
+      const flags = { 
+        highlighted, 
+        dimmed, 
+        selected, 
+        colorMode,
+        isContiguous: box.isLandmark && contiguousLandmarkIds.has(box.id),
+        clusterCenter: isPrimary ? clusterCenters.get(box.id) : null
+      };
       
       let group = map.get(box.id);
       if (group) {
@@ -134,22 +185,25 @@ function WarehouseViewer({ dominantType, activeItem }) {
         map.set(box.id, group);
       }
     });
-  }, [boxes, dominantType, selectedBoxId, selectedItemType, activeItem, colorMode]);
+    console.log("WarehouseViewer: Mesh management complete. Initialized:", initialized);
+  }, [boxes, dominantType, selectedBoxId, selectedItemType, activeItem, colorMode, initialized]); // DEPENDENCY
 
-  const onPointerDown = (e) => {
+  const onPointerDown = useCallback((e) => {
     ptrState.current = { down: true, button: e.button, lx: e.clientX, ly: e.clientY };
     
-    // Debug raycasting
-    if (!mountRef.current || !cameraRef.current) return;
-    const rect = mountRef.current.getBoundingClientRect();
+    const el = mountRef.current;
+    const cam = camRef.current;
+    if (!el || !cam) return;
+    
+    const rect = el.getBoundingClientRect();
     const ndc = new THREE.Vector2(
       ((e.clientX - rect.left) / rect.width) * 2 - 1,
       -((e.clientY - rect.top) / rect.height) * 2 + 1,
     );
-    raycaster.current.setFromCamera(ndc, cameraRef.current);
+    rcRef.current.setFromCamera(ndc, cam);
     
-    const objects = Array.from(boxGroupsMapRef.current.values());
-    const hits = raycaster.current.intersectObjects(objects, true);
+    const objects = Array.from(meshMapRef.current.values());
+    const hits = rcRef.current.intersectObjects(objects, true);
     
     if (hits.length > 0) {
       let obj = hits[0].object;
@@ -164,12 +218,11 @@ function WarehouseViewer({ dominantType, activeItem }) {
       setSelectedBoxId(null);
       setSelectedItemType(null);
     }
-  };
+  }, []);
 
-  const onPointerMove = (e) => {
+  const onPointerMove = useCallback((e) => {
     const ps = ptrState.current;
     if (!ps.down) return;
-    console.log("WarehouseViewer: onPointerMove dragging...");
     const dx = e.clientX - ps.lx;
     const dy = e.clientY - ps.ly;
 
@@ -177,7 +230,7 @@ function WarehouseViewer({ dominantType, activeItem }) {
         camSph.current.theta -= dx * 0.008;
         camSph.current.phi -= dy * 0.008;
     } else { // Pan
-        const cam = cameraRef.current;
+        const cam = camRef.current;
         const fwd = new THREE.Vector3();
         cam.getWorldDirection(fwd);
         fwd.y = 0;
@@ -190,16 +243,17 @@ function WarehouseViewer({ dominantType, activeItem }) {
     applyCamera();
     ps.lx = e.clientX;
     ps.ly = e.clientY;
-  };
+  }, [applyCamera]);
 
-  const onPointerUp = () => {
-    ptrState.current.down = false;
-  };
+  const onPointerUp = useCallback(() => {
+    ptrState.current = { down: false, button: -1, lx: 0, ly: 0 };
+  }, []);
 
-  const onWheel = (e) => {
+  const onWheel = useCallback((e) => {
+    e.preventDefault();
     camSph.current.r = Math.max(3, Math.min(80, camSph.current.r + e.deltaY * 0.04));
     applyCamera();
-  };
+  }, [applyCamera]);
 
   return (
     <div style={{ position: 'relative', flex: 1, width: "100%", height: "100%" }}>
@@ -234,84 +288,11 @@ function WarehouseViewer({ dominantType, activeItem }) {
             border: 'none', borderRadius: 4, cursor: 'pointer' 
           }}
         >
-          Item
+          Item Type
         </button>
       </div>
     </div>
   );
 }
 
-const MODES = [
-  { id: "inventory", label: "Manage Inventory" },
-  { id: "builder", label: "⬡ Builder" },
-];
-
-export default function AppContainer() {
-  const [activePage, setActivePage] = useState("inventory");
-  const inv = useInventory();
-  
-  // Minimal state for required functionality
-  const [activeItem, setActiveItem] = useState(null);
-  const dominantType = inv.dominantType || activeItem?.ItemType || null;
-
-  return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        height: "100vh",
-        background: T.bg0,
-        fontFamily: T.font,
-      }}
-    >
-      {/* Header */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          padding: "14px",
-          background: T.bg1,
-          borderBottom: `1px solid ${T.border}`,
-        }}
-      >
-        <div style={{ color: T.blue, fontWeight: 800, marginRight: 20 }}>
-          Swedemom
-        </div>
-        <div style={{ display: "flex", gap: 10 }}>
-          {MODES.map((mode) => (
-            <button
-              key={mode.id}
-              onClick={() => setActivePage(mode.id)}
-              style={{
-                padding: "8px 16px",
-                background: activePage === mode.id ? T.blue : T.bg2,
-                color: activePage === mode.id ? "#fff" : T.textSecondary,
-                border: "none",
-                borderRadius: 8,
-                cursor: "pointer",
-              }}
-            >
-              {mode.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
-        {activePage === "inventory" ? (
-          <>
-            <MockItemsPanel
-              activeItemPartNum={activeItem?.PartNum || null}
-              onSelectItem={(item) => setActiveItem(item)}
-            />
-            <div style={{ flex: 1, padding: 14 }}>
-              <WarehouseViewer dominantType={dominantType} activeItem={activeItem} />
-            </div>
-          </>
-        ) : (
-          <WarehouseBuilder />
-        )}
-      </div>
-    </div>
-  );
-}
+export default WarehouseViewer;
