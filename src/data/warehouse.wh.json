@@ -3,7 +3,7 @@
   "boxes": [
     {
       "id": "box_1",
-      "label": "",
+      "label": "J1",
       "presetName": "SouthWall",
       "position": {
         "x": -9.75,
@@ -3603,7 +3603,7 @@
     },
     {
       "id": "box_327",
-      "label": "",
+      "label": "X1",
       "presetName": "SmallCabinet",
       "position": {
         "x": -17.25,
@@ -3715,7 +3715,7 @@
     },
     {
       "id": "box_334",
-      "label": "",
+      "label": "X2",
       "presetName": "SmallCabinet",
       "position": {
         "x": -17.25,
@@ -4284,7 +4284,7 @@
     },
     {
       "id": "box_371",
-      "label": "",
+      "label": "J2",
       "presetName": "SouthWall",
       "position": {
         "x": -9.75,
@@ -4316,7 +4316,7 @@
     },
     {
       "id": "box_373",
-      "label": "",
+      "label": "J3",
       "presetName": "SouthWall",
       "position": {
         "x": -9.75,
@@ -4332,7 +4332,7 @@
     },
     {
       "id": "box_374",
-      "label": "",
+      "label": "J4",
       "presetName": "SouthWall",
       "position": {
         "x": -9.75,
@@ -4524,7 +4524,7 @@
     },
     {
       "id": "box_386",
-      "label": "",
+      "label": "X3",
       "presetName": "SmallCabinet",
       "position": {
         "x": -17.25,
@@ -4540,7 +4540,7 @@
     },
     {
       "id": "box_387",
-      "label": "",
+      "label": "X4",
       "presetName": "SmallCabinet",
       "position": {
         "x": -17.25,
